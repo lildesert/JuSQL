@@ -2,10 +2,19 @@
 #define	SCHEMA_H
 
 #include <cstdlib>
-#include <iostream>
 #include <string>
 #include <vector>
+#include "Relation.h"
 
-void menuSchema();
+class Schema
+{
+public:
+	Schema(void);
+	~Schema(void);
+private:
+	int idSchema;
+	string nomSchema;
+	vector<Relation> listRelation;
+};
 
 #endif	/* SCHEMA_H */

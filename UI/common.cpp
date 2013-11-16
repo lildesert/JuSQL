@@ -2,16 +2,17 @@
 
 using namespace std;
 
-int menuGenerique(string titre, vector<string> menuLn)
+int menuCommon(string titre, vector<string> menuLn)
 {
 	bool continuer(true);
     int choix= 0;
     while(continuer)
 	{
-		cout << "---------" +titre +"---------" << endl << "Menu " << endl;
+		println("---------" +titre +"---------");
+		println("Menu ");
 		for (int i(0); i < menuLn.size() ; i++)
 		{
-			cout << menuLn[i] << endl;
+			println(menuLn[i]);
 		}
 		cin >> choix;
 		if(choix > 1 && choix < menuLn.size())
@@ -21,4 +22,9 @@ int menuGenerique(string titre, vector<string> menuLn)
 	}
 
 	return choix;
+}
+
+void println(string txt)
+{
+	cout << txt << endl;
 }

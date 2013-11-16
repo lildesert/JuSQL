@@ -6,6 +6,6 @@
 #include <string>
 #include <vector>
 
-int menuGenerique(string titre, vector<string> menuLn);
+int menuCommon(string titre, vector<string> menuLn);
 
 #endif	/* COMMON_H */

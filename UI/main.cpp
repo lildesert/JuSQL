@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
 				menuLn[0] = "1 - Créer un nouveau schéma";
 				menuLn[1] = "2 - Modifier le schéma existant";
 				menuLn[2] = "3 - Retour à l'accueil";
-				int choix2 = menuGenerique("Gestion du schéma de la BDD", menuLn);
+				int choix2 = menuCommon("Gestion du schéma de la BDD", menuLn);
                 break;
             }
             case 2: {

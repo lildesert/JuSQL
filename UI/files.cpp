@@ -39,7 +39,7 @@ void chargerPages(vector<string> & tabBlocs) {
     }
 }
 
-/* Sauvegarde les pages d'un relation de la mémoire vive vers
+/* Sauvegarde les pages d'une relation de la mémoire vive vers
  * la mémoire persistance.
  */
 void sauvegarderPages(vector<string> & tabBlocs) {

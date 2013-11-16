@@ -78,21 +78,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Attribut.cpp" />
     <ClCompile Include="common.cpp" />
     <ClCompile Include="content_manager.cpp" />
     <ClCompile Include="files.cpp" />
     <ClCompile Include="interface.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pages_manager.cpp" />
-    <ClCompile Include="schema.cpp" />
+    <ClCompile Include="Relation.cpp" />
+    <ClCompile Include="Schema.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Attribut.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="content_manager.h" />
     <ClInclude Include="files.h" />
     <ClInclude Include="interface.h" />
     <ClInclude Include="pages_manager.h" />
-    <ClInclude Include="schema.h" />
+    <ClInclude Include="Relation.h" />
+    <ClInclude Include="Schema.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="bdd.txt" />
