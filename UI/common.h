@@ -8,4 +8,6 @@
 
 int menuCommon(string titre, vector<string> menuLn);
 
+void println(string txt);
+
 #endif	/* COMMON_H */
