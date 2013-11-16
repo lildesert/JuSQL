@@ -7,6 +7,8 @@
 #include "pages_manager.h"
 #include "content_manager.h"
 #include "interface.h"
+#include "schema.h"
+#include "common.h"
 
 using namespace std; 
 
@@ -30,7 +32,11 @@ int main(int argc, char** argv) {
         switch (choix)
         {
             case 1: {
-                cout << "1" << endl;
+				vector<string> menuLn(3);
+				menuLn[0] = "1 - Créer un nouveau schéma";
+				menuLn[1] = "2 - Modifier le schéma existant";
+				menuLn[2] = "3 - Retour à l'accueil";
+				int choix2 = menuGenerique("Gestion du schéma de la BDD", menuLn);
                 break;
             }
             case 2: {
@@ -46,4 +52,3 @@ int main(int argc, char** argv) {
     cout << "--------- Exit ---------" << endl;
     return 0;
 }
-

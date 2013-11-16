@@ -90,7 +90,7 @@ void creerEnregistrement(string IDRelation, int nbMaxNUplets) {
                     bloc += fPages.get();
                     ++t;
                 }
-                if(fPages.tellg() == (bitset< 8 >(adressesPages[i]).to_ulong() - 512)){
+                if(fPages.tellg() = (bitset< 8 >(adressesPages[i]).to_ulong() - 512)){
                     // Le bloc suivant fait partie des blocs possibles
                     // On regarde s'il y a de la place dans le bloc
                     zoneGestion = bloc.substr(8, nbMaxNUplets);
@@ -192,10 +192,10 @@ string getTableIDRelation(string table){
     return table.substr(0, 1);
 }
 
-vector<string> getTableChamps(string table){
-    /*vector<string> champs;
-    table.substr(1).c_str();*/
-}
+/*vector<string> getTableChamps(string table){
+    vector<string> champs;
+    table.substr(1).c_str();
+}*/
 
 /*if(typeChamp == "A") { //Entier
                 contenu = ligne.substr(0, 1).c_str();
