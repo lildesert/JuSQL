@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
 int menuCommon(string titre, vector<string> menuLn);
 
 void println(string txt);
