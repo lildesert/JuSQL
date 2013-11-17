@@ -12,6 +12,7 @@ public:
 	Schema(void);
 	~Schema(void);
 private:
+	//Test
 	int idSchema;
 	string nomSchema;
 	vector<Relation> listRelation;
