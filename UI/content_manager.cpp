@@ -2,9 +2,9 @@
 #include "content_manager.h"
 
 
-// Une fonction qui initialise une page P passée en paramètre
+// Une fonction qui initialise une page P passÃ©e en paramÃ¨tre
 // initPage
 
 
-//Une fonction qui insère un nuplet (en paramètre) dans une page P (en paramètre)
+//Une fonction qui insÃ¨re un nuplet (en paramÃ¨tre) dans une page P (en paramÃ¨tre)
 // insertNuplet

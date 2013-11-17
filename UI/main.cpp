@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <list>
 
 #include "files.h"
 #include "pages_manager.h"
@@ -16,12 +17,16 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-    cout << "DÈmarrage de JuSQL..." << endl;
-    //Chargement des pages en mÈmoire vive
-    vector<string> tabSchema; // Tableau contenant le schÈma de la base
+    cout << "D√©marrage de JuSQL..." << endl;
+    //Chargement des pages en m√©moire vive
+    vector<string> tabSchema; // Tableau contenant le sch√©ma de la base
     vector<string> tabBlocs; // Tableau des blocs
     
-    creerEnregistrement("00000001", 3);
+    list<string> nUplet;
+    nUplet.push_back("00100101"); // ID
+    nUplet.push_back("000000010000000100000001"); // Trois caract√®res
+    allouerPages("00000001", 3, nUplet);
+    //creerEnregistrement("00000001", 3, NULL);
     
     AfficherSchema(tabSchema);
         
@@ -33,10 +38,10 @@ int main(int argc, char** argv) {
         {
             case 1: {
 				vector<string> menuLn(3);
-				menuLn[0] = "1 - CrÈer un nouveau schÈma";
-				menuLn[1] = "2 - Modifier le schÈma existant";
-				menuLn[2] = "3 - Retour ‡ l'accueil";
-				int choix2 = menuCommon("Gestion du schÈma de la BDD", menuLn);
+				menuLn[0] = "1 - Cr√©er un nouveau sch√©ma";
+				menuLn[1] = "2 - Modifier le sch√©ma existant";
+				menuLn[2] = "3 - Retour √† l'accueil";
+				int choix2 = menuCommon("Gestion du sch√©ma de la BDD", menuLn);
                 break;
             }
             case 2: {

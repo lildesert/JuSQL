@@ -8,11 +8,12 @@ using namespace std;
 #include <iostream>
 #include <fstream>
 #include <bitset>
+#include <list>
 #include "files.h"
 
-void creerEnregistrement(string IDRelation, int nbMaxNUplets);
+void creerEnregistrement(string IDRelation, int nbMaxNUplets, list<string> Nuplet);
 
-void allouerPages(string IDRelation, int nbMaxNuplets);
+void allouerPages(string IDRelation, int nbMaxNuplets, list<string> nUplet);
 
 void AfficherPages(vector<string> &tabBlocs);
 
