@@ -17,9 +17,8 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-    cout << "Démarrage de JuSQL..." << endl;
-    //Chargement des pages en mémoire vive
-    vector<string> tabSchema; // Tableau contenant le schéma de la base
+    //Chargement des pages en m�moire vive
+    vector<string> tabSchema; // Tableau contenant le sch�ma de la base
     vector<string> tabBlocs; // Tableau des blocs
     
     list<string> nUplet;
@@ -32,16 +31,27 @@ int main(int argc, char** argv) {
         
     // Lancement du menu principal de l'application
     bool continuer = true;
+	int choix = MenuPrincipal();
     while (continuer) {
-        int choix = menuPrincipal();
         switch (choix)
         {
             case 1: {
-				vector<string> menuLn(3);
-				menuLn[0] = "1 - Créer un nouveau schéma";
-				menuLn[1] = "2 - Modifier le schéma existant";
-				menuLn[2] = "3 - Retour à l'accueil";
-				int choix2 = menuCommon("Gestion du schéma de la BDD", menuLn);
+				int choix2 = MenuSchema();
+				switch(choix2)
+				{
+					case 1: {
+						cout << "1" << endl;
+						break;
+					}
+					case 2: {
+						cout << "2" << endl;
+						break;
+					}
+					case 3: {
+						choix = MenuPrincipal();
+						break;
+					}
+				}
                 break;
             }
             case 2: {

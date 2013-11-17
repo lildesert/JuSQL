@@ -3,16 +3,20 @@
 using namespace std;
 
 // Affichage du menu de l'application
-int menuPrincipal () {
-    bool continuer(true);
-    int choix= 0;
-    while(continuer) {
-        cout << "--------- JuSQL ---------" << endl << "Menu " << endl;
-        cout << "1 - Gestion du schéma de la base." << endl;
-        cout << "2 - Exécuter du SQL" << endl;
-        cout << "3 - Quitter" << endl;
-        cin >> choix;
-        if(choix == 1 || choix == 2 || choix == 3) continuer = false;
-    }
-    return choix;
+int MenuPrincipal () {
+	vector<string> menuLn(3);
+	menuLn[0] = "1 - Gestion du schéma de la base";
+	menuLn[1] = "2 - Exécuter du SQL";
+	menuLn[2] = "3 - Quitter";
+	return MenuCommon("Menu principal ", menuLn);
+}
+
+// Affichage du menu de la partie Schéma
+int MenuSchema()
+{
+	vector<string> menuLn(3);
+	menuLn[0] = "1 - Créer un nouveau schéma";
+	menuLn[1] = "2 - Modifier le schéma existant";
+	menuLn[2] = "3 - Retour à l'accueil";
+	return MenuCommon("Gestion du schéma de la BDD", menuLn);
 }

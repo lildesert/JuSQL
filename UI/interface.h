@@ -4,8 +4,12 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <vector>
+#include "common.h"
 
-int menuPrincipal();
+int MenuPrincipal();
+
+int MenuSchema();
 
 #endif	/* INTERFACE_H */
 
