@@ -5,25 +5,39 @@
 using namespace std;
 
 /* Allouer une page pour une relation R
+ * si champs est Ã  null alors allocation d'un bloc vide
  */
-void allouerPages(string IDRelation, int nbMaxNuplets) {
-    int taillePage(512);
-    ofstream fPages("bdd.txt", ios::app); //Ouverture du fichier et curseur à la fin
-    ofstream fRelationPages("R_Pages.txt", ios::app); //Ouverture du fichier et curseur à la fin
+void allouerPages(string IDRelation, int nbMaxNuplets, list<string> nUplet) {
+    int taillePage(512), i;
+    ofstream fPages("UI/bdd.txt", ios::app); //Ouverture du fichier et curseur Ã  la fin
+    ofstream fRelationPages("UI/R_Pages.txt", ios::app); //Ouverture du fichier et curseur Ã  la fin
     
     if(fPages && fRelationPages) {
-        int i;
-        fPages << IDRelation; // Premier octet contenant l'identifiant de la relation
-        // Zone de gestion initialisée à zéro ( Juste pour être clair )
-        for(i= 0; i< nbMaxNuplets; ++i){ 
-            fPages << 0;
-        }
-        //On réserve l'emplacement pour la page avec des 0
-        for(i= 0; i< (taillePage - 1 - nbMaxNuplets); ++i){ // -1 --> identifiant de la relation
-            fPages << 0;
-        }
-        //Mise à jour du fichier Relation - Pages
         int adresseNouveauBloc(fPages.tellp());
+        fPages << IDRelation; // Premier octet contenant l'identifiant de la relation
+        // Zone de gestion initialisÃ©e Ã  zÃ©ro sauf si la map contient un n-uplet
+        for(i= 0; i< nbMaxNuplets; ++i){
+            if(nUplet.size() != 0 && i== 0) {
+                fPages << 1; // On insÃ¨re en mÃªme temps un enregistrement
+            } else {
+                fPages << 0;
+            }
+        }
+        i= 0;
+        if(nUplet.size() != 0){
+            string champ;
+            for(list<string>::iterator it= nUplet.begin(); it!= nUplet.end(); ++it) {
+                champ = *it;
+                i += champ.size();
+                fPages << champ; // Insertion du N-Uplet passÃ© en paramÃ¨tre
+            }
+        }
+        //On rÃ©serve l'emplacement pour la page avec des 0
+        while(i < taillePage - 8 - nbMaxNuplets) { // -8 --> identifiant de la relation
+            fPages << "0";
+            ++i;
+        }
+        //Mise Ã  jour du fichier Relation - Pages
         //Au passage, conversion integer to binary string
         fRelationPages << IDRelation << bitset< 8 >( adresseNouveauBloc ).to_string();
         
@@ -33,46 +47,46 @@ void allouerPages(string IDRelation, int nbMaxNuplets) {
     }
 }
 
-/* Créer un nouvel enregistrement pour la relation R
- * A voir pour passer dynamiquement les valeurs souhaitées
+/* CrÃ©er un nouvel enregistrement pour la relation R
+ * A voir pour passer dynamiquement les valeurs souhaitÃ©es
  */
-void creerEnregistrement(string IDRelation, int nbMaxNUplets) {
-    //Faux Jeu de données 
+void creerEnregistrement(string IDRelation, int nbMaxNUplets, list<string> nUplet) {
+    //Faux Jeu de donnÃ©es 
     string champsID("01000110"); // ID de type entier donc 1 octect.
-    string champsContenu("0100011001000110010001100100011001000110"); //5 octets donc 5 caractères.
+    string champsContenu("0100011001000110010001100100011001000110"); //5 octets donc 5 caractÃ¨res.
     
-    //Contiendra toutes les adresses des pages allouées pour R
+    //Contiendra toutes les adresses des pages allouÃ©es pour R
     vector<string> adressesPages;
     int i, j;
-    // Ouverture du fichier contenant toutes les adresses de pages allouées pour R
-    ifstream fRelationPages("R_Pages.txt");
+    // Ouverture du fichier contenant toutes les adresses de pages allouÃ©es pour R
+    ifstream fRelationPages("UI/R_Pages.txt");
     if(fRelationPages) {
         string tmpIDRelation("");
         string addrPage("");
-        fRelationPages.seekg(0, ios::end); //On se place à la fin du fichier pour connaître sa taille
+        fRelationPages.seekg(0, ios::end); //On se place Ã  la fin du fichier pour connaitre sa taille
         int tailleFichier = fRelationPages.tellg();
-        fRelationPages.seekg(0, ios::beg); //On se replace au début du fichier
-        if(tailleFichier != 0) { // Penser à contrôler la validité du fichier
-            while(fRelationPages.tellg() < tailleFichier) { // Tant que l'on est pas à la fin du fichier
+        fRelationPages.seekg(0, ios::beg); //On se replace au dÃ©but du fichier
+        if(tailleFichier != 0) { // Penser Ã  contrÃ´ler la validitÃ© du fichier
+            while(fRelationPages.tellg() < tailleFichier) { // Tant que l'on est pas Ã  la fin du fichier
                 addrPage = "";
                 tmpIDRelation = "";
                 for(i= 0; i < 8; ++i){ //Lecture de 8 bits
                     tmpIDRelation += fRelationPages.get();
                 }
-                if(IDRelation.compare(tmpIDRelation) == 0) { //Identifiants égaux
+                if(IDRelation.compare(tmpIDRelation) == 0) { //Identifiants Ã©gaux
                     for(j= 0; j < 8; ++j){
                         addrPage += fRelationPages.get();
                     }
                     adressesPages.push_back(addrPage);
                 } else {
-                    fRelationPages.seekg(8); //On passe directement à l'identifiant suivant
+                    fRelationPages.seekg(8); //On passe directement Ã  l'identifiant suivant
                 }
             }
         }
     } else {
         cout << endl << "ERREUR: Impossible d'ouvrir le fichier : R_Pages.txt " << endl;
     }
-    /*Pour chaque adresse trouvée ci-dessus on regarde si la page
+    /*Pour chaque adresse trouvÃ©e ci-dessus on regarde si la page
      * a une place libre pour l'enregistrement
      */
     bool aucunePlaceLibre(true);
@@ -80,12 +94,12 @@ void creerEnregistrement(string IDRelation, int nbMaxNUplets) {
         ifstream fPages("bdd.txt");
         if(fPages) {
             string bloc, zoneGestion, suiteFichier, ligne;
-            vector<string> blocs; // Tableau de tous les blocs du fichier, que l'on remmettra dans le fichier à la fin
+            vector<string> blocs; // Tableau de tous les blocs du fichier, que l'on remmettra dans le fichier Ã  la fin
             int t = 0, tailleF(tailleFichier("bdd.txt"));
 
             while (t < tailleF) {
-                // On prend 512 bits / caractère à la fois
-                bloc = ""; // On réinitialise le bloc
+                // On prend 512 bits / caractÃ¨re Ã  la fois
+                bloc = ""; // On rÃ©initialise le bloc
                 for(int j= 0; j < 512; ++j) { // On prend le bloc / les 512 bits suivants
                     bloc += fPages.get();
                     ++t;
@@ -97,22 +111,22 @@ void creerEnregistrement(string IDRelation, int nbMaxNUplets) {
                     for(int z= 0; z < zoneGestion.size(); ++z) { // Pour chaque bit de la zone de gestion
                         cout << zoneGestion.at(z);
                         /*if(zoneGestion.at(j) ) { // Si la zone est libre 
-                            // Création d'un fichier temporaire de recopie
+                            // CrÃ©ation d'un fichier temporaire de recopie
                             ofstream fPages_tmp("tmp_bdd.txt");
                             if(fPages_tmp) {
-                                // Retourne au début du fichier
+                                // Retourne au dÃ©but du fichier
                                 fPages.seekp(0, ios::beg);
-                                // On recopie tous les pages précédentes dans le fichier temporaire
+                                // On recopie tous les pages prÃ©cÃ©dentes dans le fichier temporaire
                                 getline(fPages, ligne);
                             suiteFichier = ligne.substr();
                             } else {
-                                cout << endl << "ERREUR: Impossible d'ouvrir/créer le fichier temporaire : bdd_tmp.txt " << endl;
+                                cout << endl << "ERREUR: Impossible d'ouvrir/crÃ©er le fichier temporaire : bdd_tmp.txt " << endl;
                             }
                         }*/
                         aucunePlaceLibre = false;
                     }  
                 } else {
-                    // On place le bloc en réserve
+                    // On place le bloc en rÃ©serve
                     blocs.push_back(bloc);
                 }
             }
@@ -120,7 +134,8 @@ void creerEnregistrement(string IDRelation, int nbMaxNUplets) {
             cout << endl << "ERREUR: Impossible d'ouvrir le fichier : bdd.txt" << endl;
         }
     }
-    if(aucunePlaceLibre) { // Il faut alors créer une nouvelle Page
+    // Si aucune place libre il faut crÃ©er une nouvelle Page
+    if(aucunePlaceLibre) {
         ofstream fPages("bdd.txt");
         if(fPages){
             fPages.seekp(0, ios::end);
@@ -159,7 +174,7 @@ void AfficherPagesLisiblement(vector<string> &tabBlocs) {
 }
 
 void AfficherSchema(vector<string> &tabSchema) {
-    cout << endl << "====== Affichage brut du schéma ======" << endl;
+    cout << endl << "====== Affichage brut du schÃ©ma ======" << endl;
     for(int i(0); i< tabSchema.size(); ++i) {
         cout << i << ". " << tabSchema[i] << endl;
     }
@@ -167,7 +182,7 @@ void AfficherSchema(vector<string> &tabSchema) {
 }
 
 /*void AfficherSchemaLisiblement(vector<string> &tabSchema) {
-    cout << endl << "====== Affichage lisible du schéma ======" << endl;
+    cout << endl << "====== Affichage lisible du schÃ©ma ======" << endl;
     string IDRelation, nomChamp, typeChamp, table;
     for(int i(0); i< tabSchema.size(); ++i) {
         table = tabSchema[i]; 

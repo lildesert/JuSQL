@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <list>
 
 #include "files.h"
 #include "pages_manager.h"
@@ -16,11 +17,15 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-    //Chargement des pages en mémoire vive
-    vector<string> tabSchema; // Tableau contenant le schéma de la base
+    //Chargement des pages en mï¿½moire vive
+    vector<string> tabSchema; // Tableau contenant le schï¿½ma de la base
     vector<string> tabBlocs; // Tableau des blocs
     
-    creerEnregistrement("00000001", 3);
+    //list<string> nUplet;
+    //nUplet.push_back("00100101"); // ID
+    //nUplet.push_back("000000010000000100000001"); // Trois caractÃ¨res
+    //allouerPages("00000001", 3, nUplet);
+    //creerEnregistrement("00000001", 3, NULL);
     
     AfficherSchema(tabSchema);
         
