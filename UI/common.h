@@ -10,7 +10,7 @@ using namespace std;
 
 int MenuCommon(string titre, vector<string> menuLn);
 
-void Println(string txt);
+void PrintLn(string txt);
 
 void ClearScreen();
 

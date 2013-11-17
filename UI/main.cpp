@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
 				switch(choix2)
 				{
 					case 1: {
-						cout << "1" << endl;
+						CreateSchema();
 						break;
 					}
 					case 2: {

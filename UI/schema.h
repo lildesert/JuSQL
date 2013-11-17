@@ -11,6 +11,8 @@ class Schema
 public:
 	Schema(void);
 	~Schema(void);
+	Schema(string nom);
+	void Schema::addRelation(Relation r);
 private:
 	int idSchema;
 	string nomSchema;

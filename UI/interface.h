@@ -6,10 +6,13 @@
 #include <string>
 #include <vector>
 #include "common.h"
+#include "schema.h"
 
 int MenuPrincipal();
 
 int MenuSchema();
+
+void CreateSchema();
 
 #endif	/* INTERFACE_H */
 
