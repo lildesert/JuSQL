@@ -21,10 +21,10 @@ int main(int argc, char** argv) {
     vector<string> tabSchema; // Tableau contenant le sch�ma de la base
     vector<string> tabBlocs; // Tableau des blocs
     
-    list<string> nUplet;
-    nUplet.push_back("00100101"); // ID
-    nUplet.push_back("000000010000000100000001"); // Trois caractères
-    allouerPages("00000001", 3, nUplet);
+    //list<string> nUplet;
+    //nUplet.push_back("00100101"); // ID
+    //nUplet.push_back("000000010000000100000001"); // Trois caractères
+    //allouerPages("00000001", 3, nUplet);
     //creerEnregistrement("00000001", 3, NULL);
     
     AfficherSchema(tabSchema);
