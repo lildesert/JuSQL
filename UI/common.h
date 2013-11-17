@@ -8,8 +8,10 @@
 
 using namespace std;
 
-int menuCommon(string titre, vector<string> menuLn);
+int MenuCommon(string titre, vector<string> menuLn);
 
-void println(string txt);
+void Println(string txt);
+
+void ClearScreen();
 
 #endif	/* COMMON_H */
