@@ -8,6 +8,10 @@
 
 using namespace std;
 
+void afficherPbmOuverture(string nomFichier);
+
+void viderFichier(string nomFichier);
+
 void chargerPages(vector<string> & tabBlocs);
 
 void chargerSchema(vector<string> &tabSchema);
