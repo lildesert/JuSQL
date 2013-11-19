@@ -2,7 +2,7 @@
 
 using namespace std;
 
-//Affiche un menu dont le titre est passé en paramètre et dont les choix sont dans le tableau menuLn
+//Affiche un menu dont le titre est passÃ© en paramÃ¨tre et dont les choix sont dans le tableau menuLn
 int MenuCommon(string titre, vector<string> menuLn)
 {
 	ClearScreen();
@@ -24,7 +24,7 @@ int MenuCommon(string titre, vector<string> menuLn)
 	}
 }
 
-//Ecrit le texte passé en paramètre dans la console puis insère un retour charriot
+//Ecrit le texte passÃ© en paramÃ¨tre dans la console puis insÃ¨re un retour charriot
 void PrintLn(string txt)
 {
 	cout << txt << endl;
@@ -35,4 +35,13 @@ void ClearScreen()
 {
 	if (system("CLS")) system("clear");
 	PrintLn("--------- JuSQL ---------");
+}
+
+void PortableSleep(int sec) {
+#   ifdef POSIX
+        sleep(sec);
+#   endif
+#   ifdef WINDOWS
+        Sleep(sec * 1000);
+#   endif
 }
