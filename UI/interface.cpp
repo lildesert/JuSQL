@@ -1,33 +1,35 @@
-#include "interface.h"
+ï»¿#include "interface.h"
 
 using namespace std;
 
 // Affichage du menu de l'application
 int MenuPrincipal () {
 	vector<string> menuLn(3);
-	menuLn[0] = "1 - Gestion du schéma de la base";
-	menuLn[1] = "2 - Exécuter du SQL";
+	menuLn[0] = "1 - Gestion du schÃ©ma de la base";
+	menuLn[1] = "2 - ExÃ©cuter du SQL";
 	menuLn[2] = "3 - Quitter";
 	return MenuCommon("Menu principal ", menuLn);
 }
 
-// Affichage du menu de la partie Schéma
+// Affichage du menu de la partie SchÃ©ma
 int MenuSchema()
 {
 	vector<string> menuLn(3);
-	menuLn[0] = "1 - Créer un nouveau schéma";
-	menuLn[1] = "2 - Modifier le schéma existant";
-	menuLn[2] = "3 - Retour à l'accueil";
-	return MenuCommon("Gestion du schéma de la BDD", menuLn);
+	menuLn[0] = "1 - CrÃ©er un nouveau schÃ©ma";
+	menuLn[1] = "2 - Modifier le schÃ©ma existant";
+	menuLn[2] = "3 - Retour Ã  l'accueil";
+	return MenuCommon("Gestion du schÃ©ma de la BDD", menuLn);
 }
 
-void CreateSchema()
+Schema CreateSchema()
 {
-	PrintLn("--------- Création d'un nouveau schéma ---------");
+	ClearScreen();
+	PrintLn("--------- CrÃ©ation d'un nouveau schÃ©ma ---------");
 	PrintLn("");
-	PrintLn("Entrez un nom pour le schéma : ");
+	PrintLn("Entrez un nom pour le schÃ©ma : ");
 	string nomS;
 	cin >> nomS;
 	Schema s(nomS);
-	PrintLn("Schéma créé");
+	PrintLn("SchÃ©ma crÃ©Ã©");
+	return s;
 }

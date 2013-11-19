@@ -14,4 +14,6 @@ void PrintLn(string txt);
 
 void ClearScreen();
 
+void PortableSleep(int sec);
+
 #endif	/* COMMON_H */
