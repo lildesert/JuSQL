@@ -22,8 +22,26 @@ int main(int argc, char** argv) {
     vector<string> tabBlocs; // Tableau des blocs
     
     //Réinitialisation == A enlever pour soutenance
-    viderFichier("UI/bdd.txt");
-    viderFichier("UI/R_pages.txt");
+    //viderFichier("UI/bdd.txt");
+    //viderFichier("UI/R_pages.txt");
+    
+    string str("00000010");
+    
+    std::bitset<8> c(str);
+    
+    unsigned long i = c.to_ulong(); 
+    char c2 = (char) "5";
+    
+    cout << "c : " << c << endl;
+    cout << "i : " << i << endl;
+    cout << "c2 : " << c2 << endl;
+    
+    std::cout << "c=" << c << " char(c.to_ulong())=" << char(c.to_ulong()) << "\n";
+    
+    cout << bitset< 8 >(str) << endl;
+    cout << char(bitset< 8 >(str).to_ulong()) << endl;
+    
+    AfficherPages();
     
     //list<string> nUplet;
     //nUplet.push_back("00100101"); // ID

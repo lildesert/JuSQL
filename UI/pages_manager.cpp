@@ -158,7 +158,7 @@ void creerEnregistrement(string IDRelation, int nbMaxNUplets, list<string> nUple
 }
 
 void AfficherPages() {
-    cout << endl << "====== Affichage brut des pages ======" << endl;
+    cout << endl << "====== Affichage des pages ======" << endl;
     
     //======= ATTENTE DE LA FONCTION DE JULIEN =======
     int nbMaxNUplets(5);
@@ -195,12 +195,17 @@ void AfficherPages() {
             }
             i += 8;
             cout << "\tIDRelation : " << idRelation << endl;
+            
+            // ========== Attente fonction ======
+            // Prendre les taillesChamps et types champs pour l'ID de relation
+            // ============================
+            
             for(j = 0; j< nbMaxNUplets; ++j){
                 zoneGestion += fPages.get();
                 ++i;
             }
             i += nbMaxNUplets;
-            cout << "\tZone de gestion : " zoneGestion << endl;
+            cout << "\tZone de gestion : " << zoneGestion << endl;
             for(j = 0; j< nbMaxNUplets; ++j){
                 zoneGestion += fPages.get();
             }
