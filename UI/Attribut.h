@@ -17,6 +17,7 @@ private:
 	int idAttribut;
 	string nomAttribut;
 	string typeAttribut;
+	string tailleAttribut;
 };
 
 #endif	/* ATTRIBUT_H */

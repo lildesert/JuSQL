@@ -20,6 +20,8 @@ int main(int argc, char** argv) {
 
 	Schema s;
 
+	
+
     //Chargement des pages en m�moire vive
     vector<string> tabSchema; // Tableau contenant le sch�ma de la base
     vector<string> tabBlocs; // Tableau des blocs
