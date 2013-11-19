@@ -45,3 +45,13 @@ void PortableSleep(int sec) {
         Sleep(sec * 1000);
 #   endif
 }
+
+void saveIdIncrement(vector<int> idInc)
+{
+	//Save ids in file
+}
+
+vector<int> loadIdIncrement()
+{
+	//Load ids from file
+}

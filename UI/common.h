@@ -16,4 +16,8 @@ void ClearScreen();
 
 void PortableSleep(int sec);
 
+void saveIdIncrement(vector<int> idInc)
+
+vector<int> loadIdIncrement();
+
 #endif	/* COMMON_H */

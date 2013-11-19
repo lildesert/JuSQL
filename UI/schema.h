@@ -12,7 +12,8 @@ public:
 	Schema(void);
 	~Schema(void);
 	Schema(string nom);
-	void Schema::addRelation(Relation r);
+	void addRelation(Relation r);
+	static int idIncrementSchema;
 private:
 	int idSchema;
 	string nomSchema;

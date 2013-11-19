@@ -11,6 +11,7 @@ class Relation
 public:
 	Relation(void);
 	~Relation(void);
+	static int idIncrementRelation;
 private:
 	int idRelation;
 	string nomRelation;

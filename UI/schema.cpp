@@ -2,15 +2,16 @@
 
 using namespace std;
 
+int Schema::idIncrementSchema = 0;
+
 Schema::Schema(void)
 {
-	idSchema = 0;
 }
 
 Schema::Schema(string nom)
 {
 	nomSchema = nom;
-	idSchema = 0;
+	idSchema = idIncrementSchema++;
 }
 
 Schema::~Schema(void)
