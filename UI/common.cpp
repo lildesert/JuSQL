@@ -10,11 +10,11 @@ int MenuCommon(string titre, vector<string> menuLn)
     int choix= 0;
     while(continuer)
 	{
-		Println("---------" +titre +"---------");
-		Println("");
+		PrintLn("---------" +titre +"---------");
+		PrintLn("");
 		for (int i(0); i < menuLn.size() ; i++)
 		{
-			Println(menuLn[i]);
+			PrintLn(menuLn[i]);
 		}
 		cin >> choix;
 		if(choix >= 1 && choix <= menuLn.size())
@@ -25,7 +25,7 @@ int MenuCommon(string titre, vector<string> menuLn)
 }
 
 //Ecrit le texte passé en paramètre dans la console puis insère un retour charriot
-void Println(string txt)
+void PrintLn(string txt)
 {
 	cout << txt << endl;
 }
@@ -34,5 +34,5 @@ void Println(string txt)
 void ClearScreen()
 {
 	if (system("CLS")) system("clear");
-	Println("--------- JuSQL ---------");
+	PrintLn("--------- JuSQL ---------");
 }

@@ -20,3 +20,14 @@ int MenuSchema()
 	menuLn[2] = "3 - Retour à l'accueil";
 	return MenuCommon("Gestion du schéma de la BDD", menuLn);
 }
+
+void CreateSchema()
+{
+	PrintLn("--------- Création d'un nouveau schéma ---------");
+	PrintLn("");
+	PrintLn("Entrez un nom pour le schéma : ");
+	string nomS;
+	cin >> nomS;
+	Schema s(nomS);
+	PrintLn("Schéma créé");
+}
