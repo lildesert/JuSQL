@@ -12,38 +12,40 @@ void allouerPages(string IDRelation, int nbMaxNuplets, list<string> nUplet) {
     ofstream fPages("UI/bdd.txt", ios::app); //Ouverture du fichier et curseur à la fin
     ofstream fRelationPages("UI/R_Pages.txt", ios::app); //Ouverture du fichier et curseur à la fin
     
-    if(fPages && fRelationPages) {
-        int adresseNouveauBloc(fPages.tellp());
-        fPages << IDRelation; // Premier octet contenant l'identifiant de la relation
-        // Zone de gestion initialisée à zéro sauf si la map contient un n-uplet
-        for(i= 0; i< nbMaxNuplets; ++i){
-            if(nUplet.size() != 0 && i== 0) {
-                fPages << 1; // On insère en même temps un enregistrement
-            } else {
-                fPages << 0;
+    if(fPages) {
+        if(fRelationPages) {
+            int adresseNouveauBloc(fPages.tellp());
+            fPages << IDRelation; // Premier octet contenant l'identifiant de la relation
+            // Zone de gestion initialisée à zéro sauf si la map contient un n-uplet
+            for(i= 0; i< nbMaxNuplets; ++i){
+                if(nUplet.size() != 0 && i== 0) {
+                    fPages << 1; // On insère en même temps un enregistrement
+                } else {
+                    fPages << 0;
+                }
             }
-        }
-        i= 0;
-        if(nUplet.size() != 0){
-            string champ;
-            for(list<string>::iterator it= nUplet.begin(); it!= nUplet.end(); ++it) {
-                champ = *it;
-                i += champ.size();
-                fPages << champ; // Insertion du N-Uplet passé en paramètre
+            i= 0;
+            if(nUplet.size() != 0){
+                string champ;
+                for(list<string>::iterator it= nUplet.begin(); it!= nUplet.end(); ++it) {
+                    champ = *it;
+                    i += champ.size();
+                    fPages << champ; // Insertion du N-Uplet passé en paramètre
+                }
             }
+            //On réserve l'emplacement pour la page avec des 0
+            while(i < taillePage - 8 - nbMaxNuplets) { // -8 --> identifiant de la relation
+                fPages << "0";
+                ++i;
+            }
+            //Mise à jour du fichier Relation - Pages
+            //Au passage, conversion integer to binary string
+            fRelationPages << IDRelation << bitset< 8 >( adresseNouveauBloc ).to_string();
+        } else {
+            afficherPbmOuverture("UI/R_Pages.txt");
         }
-        //On réserve l'emplacement pour la page avec des 0
-        while(i < taillePage - 8 - nbMaxNuplets) { // -8 --> identifiant de la relation
-            fPages << "0";
-            ++i;
-        }
-        //Mise à jour du fichier Relation - Pages
-        //Au passage, conversion integer to binary string
-        fRelationPages << IDRelation << bitset< 8 >( adresseNouveauBloc ).to_string();
-        
     } else {
-        cout << endl << "ERREUR: Impossible d'ouvrir le fichier :" << endl;
-        cout << "--> bdd.txt et/ou R_Pages.txt" << endl;
+        afficherPbmOuverture("UI/bdd.txt");
     }
 }
 
@@ -84,18 +86,18 @@ void creerEnregistrement(string IDRelation, int nbMaxNUplets, list<string> nUple
             }
         }
     } else {
-        cout << endl << "ERREUR: Impossible d'ouvrir le fichier : R_Pages.txt " << endl;
+        afficherPbmOuverture("UI/R_Pages.txt");
     }
     /*Pour chaque adresse trouvée ci-dessus on regarde si la page
      * a une place libre pour l'enregistrement
      */
     bool aucunePlaceLibre(true);
     if(adressesPages.size() > 0){
-        ifstream fPages("bdd.txt");
+        ifstream fPages("UI/bdd.txt");
         if(fPages) {
             string bloc, zoneGestion, suiteFichier, ligne;
             vector<string> blocs; // Tableau de tous les blocs du fichier, que l'on remmettra dans le fichier à la fin
-            int t = 0, tailleF(tailleFichier("bdd.txt"));
+            int t = 0, tailleF(tailleFichier("UI/bdd.txt"));
 
             while (t < tailleF) {
                 // On prend 512 bits / caractère à la fois
@@ -131,12 +133,12 @@ void creerEnregistrement(string IDRelation, int nbMaxNUplets, list<string> nUple
                 }
             }
         } else {
-            cout << endl << "ERREUR: Impossible d'ouvrir le fichier : bdd.txt" << endl;
+            afficherPbmOuverture("UI/bdd.txt");
         }
     }
     // Si aucune place libre il faut créer une nouvelle Page
     if(aucunePlaceLibre) {
-        ofstream fPages("bdd.txt");
+        ofstream fPages("UI/bdd.txt");
         if(fPages){
             fPages.seekp(0, ios::end);
             string nouveauBloc;
@@ -150,26 +152,89 @@ void creerEnregistrement(string IDRelation, int nbMaxNUplets, list<string> nUple
             }
             
         } else {
-            cout << "ERREUR: Impossible d'ouvrir le fichier : bdd.txt";
+            afficherPbmOuverture("UI/bdd.txt");
         }
     }
 }
 
-void AfficherPages(vector<string> &tabBlocs) {
+void AfficherPages() {
     cout << endl << "====== Affichage brut des pages ======" << endl;
-    for(int i(0); i< tabBlocs.size(); ++i) {
-        cout << i << ". " << tabBlocs[i] << endl;
+    
+    //======= ATTENTE DE LA FONCTION DE JULIEN =======
+    int nbMaxNUplets(5);
+    //================================================
+    
+    //======= ATTENTE DE LA FONCTION DE JULIEN =======
+    list <int> listTaillesChamps;
+    listTaillesChamps.push_back(8); // 1 entier
+    listTaillesChamps.push_back(40); // 5 caractères
+    //================================================
+    
+    //======= ATTENTE DE LA FONCTION DE JULIEN =======
+    list <string> listTypesChamps;
+    listTypesChamps.push_back("id");
+    listTypesChamps.push_back("char[5]");
+    //================================================
+    
+    int tailleF(tailleFichier("UI/bdd.txt")), i(0), j, y(1), oldI(0);
+    string idRelation, zoneGestion, type, champsString, champs;
+    int nbChamps(listTypesChamps.size());
+    int tailleChamps, champsInt, taillePage(512);
+    
+    ifstream fPages("UI/bdd.txt");
+    
+    if(fPages) {
+        while(i < tailleF){
+            // Réinitialisations 
+            idRelation = "";
+            zoneGestion = "";
+            oldI = i;
+            cout << y << ". " << "Bloc :" << endl;
+            for(j = 0; j< 8; ++j){
+                idRelation += fPages.get();
+            }
+            i += 8;
+            cout << "\tIDRelation : " << idRelation << endl;
+            for(j = 0; j< nbMaxNUplets; ++j){
+                zoneGestion += fPages.get();
+                ++i;
+            }
+            i += nbMaxNUplets;
+            cout << "\tZone de gestion : " zoneGestion << endl;
+            for(j = 0; j< nbMaxNUplets; ++j){
+                zoneGestion += fPages.get();
+            }
+            i += nbMaxNUplets;
+            list<int>::iterator itTailleChamps= listTaillesChamps.begin();
+            for(list<string>::iterator it= listTypesChamps.begin(); it!= listTypesChamps.end(); ++it) {
+                type = *it;
+                tailleChamps = *itTailleChamps;
+                ++itTailleChamps;
+                for(j = 0; j< tailleChamps; ++j){
+                    champs += fPages.get();
+                }
+                i += tailleChamps;
+                if(type == "id"){
+                    champsInt = bitset< 8 >(champs).to_ulong();
+                } else if (type == "char"){
+                    
+                } else {
+                    cout << "Aucun type ne correspond. Impossible d'afficher les pages de la base." << endl;
+                }
+            }
+            i += taillePage - (i - oldI);
+            ++y;
+        }
+    } else {
+        afficherPbmOuverture("UI/bdd.txt");
     }
     cout << endl;
 }
 
-void AfficherPagesLisiblement(vector<string> &tabBlocs) {
+void AfficherPagesLisiblement() {
     cout << "====== Affichage lisible des pages ======" << endl;
     string bloc;
-    for(int i(0); i< tabBlocs.size(); ++i) {
-        bloc = tabBlocs[i];
-        cout << i << ". IDRelation: " << getBlocIDRelation(bloc) << " // Contenu: " << getBlocContent(bloc) << endl;
-    }
+    
     cout << endl;
 }
 

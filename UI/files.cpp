@@ -3,12 +3,24 @@
 
 using namespace std;
 
-/* Charge les pages d'un relation de la mémoire persistante vers
- * la mémoire vive.
+void afficherPbmOuverture(string nomFichier){
+    cout << endl << "ERREUR: Impossible d'ouvrir le fichier :" << nomFichier << endl;
+}
+
+void viderFichier(string nomFichier){
+    //Cette ouverture supprime le contenu existant
+    ifstream fichier(nomFichier.c_str()); 
+    if(! fichier){
+        afficherPbmOuverture(nomFichier);
+    }
+}
+
+/* Charge les pages d'un relation de la mï¿½moire persistante vers
+ * la mï¿½moire vive.
  * Interval :
  * --> 64 si ASCII
  * --> 64*8= 512 si bit
- * Prend en référence le tableau des pages de la relation.
+ * Prend en rï¿½fï¿½rence le tableau des pages de la relation.
  */
 void chargerPages(vector<string> & tabBlocs) {
     cout << "Chargement des pages ... ";
@@ -20,9 +32,9 @@ void chargerPages(vector<string> & tabBlocs) {
     string ligne;
     if(fichier) {
         if(fichierPagesValide(nomFichier)){
-            //Récupère la seule ligne du fichier
+            //Rï¿½cupï¿½re la seule ligne du fichier
             getline(fichier, ligne);
-            //Extraction de 8 caractères pas 8 caractères
+            //Extraction de 8 caractï¿½res pas 8 caractï¿½res
             while(i < (tailleF / interval)) {
                 tabBlocs.push_back(ligne.substr(0, interval).c_str());
                 ligne = ligne.substr(interval);
@@ -39,8 +51,8 @@ void chargerPages(vector<string> & tabBlocs) {
     }
 }
 
-/* Sauvegarde les pages d'une relation de la mémoire vive vers
- * la mémoire persistance.
+/* Sauvegarde les pages d'une relation de la mï¿½moire vive vers
+ * la mï¿½moire persistance.
  */
 void sauvegarderPages(vector<string> & tabBlocs) {
     cout << "Enregistrement des pages dans le fichier ... ";
@@ -55,21 +67,21 @@ void sauvegarderPages(vector<string> & tabBlocs) {
                 cout << "Bloc " << i << "--> taille incorrecte." << endl;
             }
         }
-        cout << "ok : " << i << " bloc(s) enregistré(s). " << endl;
+        cout << "ok : " << i << " bloc(s) enregistrï¿½(s). " << endl;
     } else {
         cout << endl << "ERREUR: Impossible d'ouvrir le fichier :" << endl;
         cout << "- " << nomFichier << endl;
     }
 }
 
-/* Chargement du schéma de la bdd en mémoire vive.
+/* Chargement du schï¿½ma de la bdd en mï¿½moire vive.
  * Une relation :
  * - 1er cara : IDRelation
  * - 2/6 : nom du champ
  * - 7 : type de champ 
  */
 void chargerSchema(vector<string> &tabSchema) {
-    cout << "Chargement du schéma ... ";
+    cout << "Chargement du schï¿½ma ... ";
     string nomFichier("schema.txt");
     ifstream fichier(nomFichier.c_str());
     
@@ -81,7 +93,7 @@ void chargerSchema(vector<string> &tabSchema) {
     string IDRelation, nomChamp, typeChamp;
     
     if(fichier) {
-        getline(fichier, ligne); //Récupère la seule ligne du fichier
+        getline(fichier, ligne); //Rï¿½cupï¿½re la seule ligne du fichier
         while(fichier.tellg() <= tailleF) {
             
             //Extraction d'une table
@@ -103,7 +115,7 @@ void chargerSchema(vector<string> &tabSchema) {
     }
 }
 
-//Retourne le nombre de caractères d'un fichier
+//Retourne le nombre de caractï¿½res d'un fichier
 int tailleFichier(string nomFichier) {
     int taille(0);
     ifstream fichier(nomFichier.c_str());
@@ -113,7 +125,7 @@ int tailleFichier(string nomFichier) {
     return taille; 
 }
 
-/*Vérifie que le fichier de pages est composé de blocs de 512bits
+/*Vï¿½rifie que le fichier de pages est composï¿½ de blocs de 512bits
  * Donc un multiple de 512 
  */
 bool fichierPagesValide(string nomFichier){

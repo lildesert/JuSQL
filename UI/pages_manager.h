@@ -15,9 +15,9 @@ void creerEnregistrement(string IDRelation, int nbMaxNUplets, list<string> Nuple
 
 void allouerPages(string IDRelation, int nbMaxNuplets, list<string> nUplet);
 
-void AfficherPages(vector<string> &tabBlocs);
+void AfficherPages();
 
-void AfficherPagesLisiblement(vector<string> &tabBlocs);
+void AfficherPagesLisiblement();
 
 void AfficherSchema(vector<string> &tabSchema);
 
