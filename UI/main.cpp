@@ -1,4 +1,4 @@
-#include <cstdlib>
+﻿#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -17,6 +17,9 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
+
+	Schema s;
+
     //Chargement des pages en m�moire vive
     vector<string> tabSchema; // Tableau contenant le sch�ma de la base
     vector<string> tabBlocs; // Tableau des blocs
@@ -40,7 +43,9 @@ int main(int argc, char** argv) {
 				switch(choix2)
 				{
 					case 1: {
-						CreateSchema();
+						s = CreateSchema();
+						PortableSleep(3);
+						choix2 = MenuSchema();
 						break;
 					}
 					case 2: {
