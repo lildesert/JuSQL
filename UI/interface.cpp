@@ -21,7 +21,7 @@ int MenuSchema()
 	return MenuCommon("Gestion du schéma de la BDD", menuLn);
 }
 
-Schema CreateSchema()
+void CreateSchema()
 {
 	ClearScreen();
 	PrintLn("--------- Création d'un nouveau schéma ---------");
@@ -29,7 +29,6 @@ Schema CreateSchema()
 	PrintLn("Entrez un nom pour le schéma : ");
 	string nomS;
 	cin >> nomS;
-	Schema s(nomS);
+	Schema::GetInstance().setNom(nomS);
 	PrintLn("Schéma créé");
-	return s;
 }

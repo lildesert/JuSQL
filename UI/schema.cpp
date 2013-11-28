@@ -4,18 +4,9 @@ using namespace std;
 
 int Schema::idIncrementSchema = 0;
 
-Schema::Schema(void)
+void Schema::setNom(string nom)
 {
-}
-
-Schema::Schema(string nom)
-{
-	nomSchema = nom;
-	idSchema = idIncrementSchema++;
-}
-
-Schema::~Schema(void)
-{
+	this->nomSchema = nom;
 }
 
 void Schema::addRelation(Relation r)

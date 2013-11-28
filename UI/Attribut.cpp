@@ -4,9 +4,12 @@ using namespace std;
 
 int Attribut::idIncrementAttribut = 0;
 
-Attribut::Attribut(void)
+Attribut::Attribut(string nomA, string typeA, string tailleA)
 {
-	idAttribut = 0;
+	nomAttribut = nomA;
+	typeAttribut = typeA;
+	tailleAttribut = tailleA;
+	idAttribut = idIncrementAttribut++;
 }
 
 

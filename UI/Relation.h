@@ -9,9 +9,10 @@
 class Relation
 {
 public:
-	Relation(void);
+	Relation(string nomR);
 	~Relation(void);
 	static int idIncrementRelation;
+	void addAttribut(Attribut a);
 private:
 	int idRelation;
 	string nomRelation;

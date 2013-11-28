@@ -12,7 +12,7 @@ int MenuPrincipal();
 
 int MenuSchema();
 
-Schema CreateSchema();
+void CreateSchema();
 
 #endif	/* INTERFACE_H */
 

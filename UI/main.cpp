@@ -18,8 +18,6 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
-	Schema s;
-
 	
 
     //Chargement des pages en m�moire vive
@@ -67,7 +65,7 @@ int main(int argc, char** argv) {
 				switch(choix2)
 				{
 					case 1: {
-						s = CreateSchema();
+						CreateSchema();
 						PortableSleep(3);
 						choix2 = MenuSchema();
 						break;

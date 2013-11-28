@@ -9,15 +9,23 @@
 class Schema
 {
 public:
-	Schema(void);
-	~Schema(void);
-	Schema(string nom);
 	void addRelation(Relation r);
 	static int idIncrementSchema;
+	void setNom(string nom);
+	void setId(int id);
+
+	static Schema& GetInstance()
+	{
+		static Schema s;
+		return s;
+	}
+
 private:
+	Schema() {};
+	Schema(const Schema&);
+    Schema& operator=(const Schema&); 
 	int idSchema;
 	string nomSchema;
 	vector<Relation> listRelation;
 };
-
 #endif	/* SCHEMA_H */

@@ -4,12 +4,18 @@ using namespace std;
 
 int Relation::idIncrementRelation = 0;
 
-Relation::Relation(void)
+Relation::Relation(string nomR)
 {
-	idRelation = 0;
+	nomRelation = nomR;
+	idRelation = idIncrementRelation++;
 }
 
 
 Relation::~Relation(void)
 {
+}
+
+void Relation::addAttribut(Attribut a)
+{
+	(this->listAttribut).push_back(a);
 }

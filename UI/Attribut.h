@@ -10,7 +10,7 @@ using namespace std;
 class Attribut
 {
 public:
-	Attribut(void);
+	Attribut(string nomA, string typeA, string tailleA);
 	~Attribut(void);
 	static int idIncrementAttribut;
 private:

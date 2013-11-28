@@ -54,4 +54,6 @@ void saveIdIncrement(vector<int> idInc)
 vector<int> loadIdIncrement()
 {
 	//Load ids from file
+	vector<int> result;
+	return result;
 }
