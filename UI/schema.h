@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 #include "Relation.h"
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
 class Schema
 {
