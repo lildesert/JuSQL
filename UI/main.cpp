@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
 #include "files.h"
 #include "pages_manager.h"
@@ -18,10 +20,15 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
-	
+    std::ifstream deserialization("UI/Schema.txt");
+	if(deserialization)
+	{
+		boost::archive::text_iarchive ia(deserialization);
+		ia >> Schema::GetInstance();
+	}
 
-    //Chargement des pages en m�moire vive
-    vector<string> tabSchema; // Tableau contenant le sch�ma de la base
+    //Chargement des pages en mémoire vive
+    vector<string> tabSchema; // Tableau contenant le schéma de la base
     vector<string> tabBlocs; // Tableau des blocs
     
     //Réinitialisation == A enlever pour soutenance
@@ -92,5 +99,13 @@ int main(int argc, char** argv) {
         }
     }
     cout << "--------- Exit ---------" << endl;
+
+	std::ofstream serialization("UI/Schema.txt");
+	if(serialization)
+	{
+		boost::archive::text_oarchive oa(serialization);
+		oa << const_cast<Schema &>(Schema::GetInstance());
+	}
+
     return 0;
 }
