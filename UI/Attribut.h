@@ -14,6 +14,7 @@ class Attribut
 public:
 	Attribut(string nomA, string typeA, string tailleA);
 	~Attribut(void);
+	Attribut();
 	static int idIncrementAttribut;
 private:
 	int idAttribut;

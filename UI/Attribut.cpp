@@ -16,3 +16,7 @@ Attribut::Attribut(string nomA, string typeA, string tailleA)
 Attribut::~Attribut(void)
 {
 }
+
+Attribut::Attribut()
+{
+}

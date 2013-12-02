@@ -6,12 +6,14 @@
 #include <vector>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
 
 #include "Attribut.h"
 
 class Relation
 {
 public:
+	Relation();
 	Relation(string nomR);
 	~Relation(void);
 	static int idIncrementRelation;
