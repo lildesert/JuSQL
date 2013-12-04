@@ -1,4 +1,4 @@
-﻿#include <cstdlib>
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -17,18 +17,30 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-
-	
-
-    //Chargement des pages en m�moire vive
-    vector<string> tabSchema; // Tableau contenant le sch�ma de la base
+    
+    viderFichier("UI/bdd.txt");
+    viderFichier("UI/R_Pages.txt");
+    
+    list<string> nUplet;
+    nUplet.push_back("00100101"); // ID
+    nUplet.push_back("110011001100110011001100"); // Trois caractères
+    char IDRelation[] = {'0','0','0','0','0','0','0','1'};
+    allouerPages(IDRelation, 15, nUplet);
+    
+    char a = '1';
+    int b = a - '0';
+    cout << "coucou" << std::bitset< 8 >( "1" ).to_string();
+    //creerEnregistrement("00000001", 3, NULL);
+    
+    //Chargement des pages en mémoire vive
+    vector<string> tabSchema; // Tableau contenant le schéma de la base
     vector<string> tabBlocs; // Tableau des blocs
     
     //Réinitialisation == A enlever pour soutenance
     //viderFichier("UI/bdd.txt");
     //viderFichier("UI/R_pages.txt");
     
-    string str("00000010");
+    /*string str("00000010");
     
     std::bitset<8> c(str);
     
@@ -44,13 +56,7 @@ int main(int argc, char** argv) {
     cout << bitset< 8 >(str) << endl;
     cout << char(bitset< 8 >(str).to_ulong()) << endl;
     
-    AfficherPages();
-    
-    //list<string> nUplet;
-    //nUplet.push_back("00100101"); // ID
-    //nUplet.push_back("000000010000000100000001"); // Trois caractères
-    //allouerPages("00000001", 3, nUplet);
-    //creerEnregistrement("00000001", 3, NULL);
+    AfficherPages(); */
     
     AfficherSchema(tabSchema);
         
