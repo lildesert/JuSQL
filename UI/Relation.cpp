@@ -10,6 +10,9 @@ Relation::Relation(string nomR)
 	idRelation = idIncrementRelation++;
 }
 
+Relation::Relation()
+{
+}
 
 Relation::~Relation(void)
 {

@@ -3,6 +3,9 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+
 
 #include "files.h"
 #include "pages_manager.h"
@@ -17,21 +20,14 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-    
-    viderFichier("UI/bdd.txt");
-    viderFichier("UI/R_Pages.txt");
-    
-    list<string> nUplet;
-    nUplet.push_back("00100101"); // ID
-    nUplet.push_back("110011001100110011001100"); // Trois caractères
-    char IDRelation[] = {'0','0','0','0','0','0','0','1'};
-    allouerPages(IDRelation, 15, nUplet);
-    
-    char a = '1';
-    int b = a - '0';
-    cout << "coucou" << std::bitset< 8 >( "1" ).to_string();
-    //creerEnregistrement("00000001", 3, NULL);
-    
+
+    std::ifstream deserialization("UI/Schema.txt");
+	if(deserialization)
+	{
+		boost::archive::text_iarchive ia(deserialization);
+		ia >> Schema::GetInstance();
+	}
+
     //Chargement des pages en mémoire vive
     vector<string> tabSchema; // Tableau contenant le schéma de la base
     vector<string> tabBlocs; // Tableau des blocs
@@ -98,5 +94,13 @@ int main(int argc, char** argv) {
         }
     }
     cout << "--------- Exit ---------" << endl;
+
+	std::ofstream serialization("UI/Schema.txt");
+	if(serialization)
+	{
+		boost::archive::text_oarchive oa(serialization);
+		oa << const_cast<Schema &>(Schema::GetInstance());
+	}
+
     return 0;
 }
