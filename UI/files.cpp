@@ -1,7 +1,6 @@
 #include "files.h"
 #include <time.h>
 
-
 using namespace std;
 
 void afficherPbmOuverture(string nomFichier){
@@ -52,22 +51,22 @@ vector<Page> chargerPages() {
 /* Sauvegarde les pages d'une relation de la mémoire vive vers
  * la mémoire persistance.
  */
-void sauvegarderPages(char tabBlocs[][512], int nbPages, bool aLaFin) {
+void sauvegarderPages(vector<Page> pages, bool aLaFin) {
     const int taillePage(512);
     int i(0);
     string chaine("");
     string nomFichier("UI/bdd.txt");
     ofstream fBDD;
-    if(aLaFin){
+    if(aLaFin){ // Insertion à la fin du fichier
         fBDD.open(nomFichier.c_str(), ios::app);
-    } else {
+    } else { // Ecrasement de l'existant
         fBDD.open(nomFichier.c_str());
     }
     if(fBDD) {
         cout << "Enregistrement des pages dans le fichier ... ";
-        for(i= 0; i< nbPages; ++i)  {
+        for(i= 0; i< pages.size(); ++i)  {
             for(int j= 0; j< taillePage; ++j) {
-                chaine += tabBlocs[i][j];
+                chaine += pages[i].e[j];
                 if(chaine.size() == 8){
                     
                     //En caractères ASCII
@@ -75,8 +74,7 @@ void sauvegarderPages(char tabBlocs[][512], int nbPages, bool aLaFin) {
                     
                     //En bits
                     fBDD << chaine;
-                    
-                    cout << "Chaine : " << chaine << endl;
+ 
                     chaine.clear();
                 }
             }
@@ -132,18 +130,13 @@ int tailleFichier(string nomFichier) {
     return taille; 
 }
 
-/*V�rifie que le fichier de pages est compos� de blocs de 512bits
- * Donc un multiple de 512 
+/*Vérifie que le fichier de pages est composé de blocs de 512bits
+ * Donc un multiple de 512 en bits et 64 en ASCII
  */
-bool fichierPagesValide(string nomFichier){
-    return (tailleFichier(nomFichier) % 512 == 0);
-}
-
-void enregistrerSchema() {
-    ofstream fichier("schema.txt");
-    if(fichier) {
-        
+bool fichierPagesValide(string nomFichier, bool modeASCII){
+    if(modeASCII){
+        return (tailleFichier(nomFichier) % 64 == 0);
     } else {
-        cout << "ERREUR: Impossible d'ouvrir le fichier." << endl;
+        return (tailleFichier(nomFichier) % 512 == 0);
     }
 }
