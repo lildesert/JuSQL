@@ -4,43 +4,76 @@
 
 using namespace std;
 
-/* Allouer une page pour une relation R
- * si champs est à null alors allocation d'un bloc vide
+/* Allouer une page pour une relation R.
+ * Cette allocation est réalisée directement dans le fichier.
+ * Il est possible d'initaliser directement la page nouvellement allouée 
+ * avec un enregistrement passé en paramètre.
+ * @param string IDRelation[] : tableau 
  */
-void allouerPages(string IDRelation, int nbMaxNuplets, list<string> nUplet) {
-    int taillePage(512), i;
-    ofstream fPages("UI/bdd.txt", ios::app); //Ouverture du fichier et curseur à la fin
-    ofstream fRelationPages("UI/R_Pages.txt", ios::app); //Ouverture du fichier et curseur à la fin
+void allouerPages(char IDRelation[], int nbMaxNuplets, list<string> nUplet) {
+    // Initialisations
+    int tailleIDRelation(8), tailleIDBloc(8), i(0), j(0);
+    const int taillePage(512);
+    char nouvellePage[1][taillePage];
+    //Lecture des deux fichiers avec curseur à la fin
+    ofstream fPages("UI/bdd.txt", ios::app);
+    ofstream fRelationPages("UI/R_Pages.txt", ios::app);
+    
+    char IDBloc[] = {'0','0','0','0','0','0','1','0'};
     
     if(fPages) {
         if(fRelationPages) {
+            //Sauvegarde de la position dans le fichier
             int adresseNouveauBloc(fPages.tellp());
-            fPages << IDRelation; // Premier octet contenant l'identifiant de la relation
-            // Zone de gestion initialisée à zéro sauf si la map contient un n-uplet
+            //Ecriture de l'octet de la l'identifiant du bloc
+            for(i= 0; i< 8; i++){
+                nouvellePage[0][j] = IDBloc[i];
+                ++j;
+            }
+            // Zone de gestion initialisée à zéro sauf si on intègre directement un enregistrement
             for(i= 0; i< nbMaxNuplets; ++i){
                 if(nUplet.size() != 0 && i== 0) {
-                    fPages << 1; // On insère en même temps un enregistrement
+                    // On insère en même temps un enregistrement
+                    nouvellePage[0][j] = '1'; 
                 } else {
-                    fPages << 0;
+                    nouvellePage[0][j] = '0';
                 }
+                ++j;
             }
-            i= 0;
+            
             if(nUplet.size() != 0){
+                // Insertion du N-Uplet passés en paramètres
                 string champ;
                 for(list<string>::iterator it= nUplet.begin(); it!= nUplet.end(); ++it) {
                     champ = *it;
-                    i += champ.size();
-                    fPages << champ; // Insertion du N-Uplet passé en paramètre
+                    for(i= 0; i< champ.size(); ++i){
+                        nouvellePage[0][j] = champ[i];
+                        ++j;
+                    }
                 }
             }
+            
+            for(int u(0); u < 55; ++u) {
+                cout << u << " : " << nouvellePage[0][u] << endl;
+            }
+            
             //On réserve l'emplacement pour la page avec des 0
-            while(i < taillePage - 8 - nbMaxNuplets) { // -8 --> identifiant de la relation
-                fPages << "0";
-                ++i;
+            while(j < taillePage) {
+                nouvellePage[0][j] = '0';
+                ++j;
             }
             //Mise à jour du fichier Relation - Pages
-            //Au passage, conversion integer to binary string
-            fRelationPages << IDRelation << bitset< 8 >( adresseNouveauBloc ).to_string();
+            for(i= 0; i< 8; ++i){
+                fRelationPages << IDRelation[i];
+            }
+            fRelationPages << bitset< 8 >( adresseNouveauBloc ).to_string();
+            
+            //Enregistrement de la page dans le fichier BDD
+            /*for(i= 0; i< taillePage; ++i){
+                //cout << nouvellePage[i];
+                fPages << nouvellePage[i];
+            }*/
+            sauvegarderPages(nouvellePage, 1, true);
         } else {
             afficherPbmOuverture("UI/R_Pages.txt");
         }
