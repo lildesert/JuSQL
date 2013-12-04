@@ -1,6 +1,7 @@
 #include "files.h"
 #include <time.h>
 
+
 using namespace std;
 
 void afficherPbmOuverture(string nomFichier){
@@ -15,71 +16,77 @@ void viderFichier(string nomFichier){
     }
 }
 
-/* Charge les pages d'un relation de la m�moire persistante vers
- * la m�moire vive.
- * Interval :
- * --> 64 si ASCII
- * --> 64*8= 512 si bit
- * Prend en r�f�rence le tableau des pages de la relation.
+/* Charge les pages depuis la mémoire persistantes vers la mémoire vive
  */
-void chargerPages(vector<string> & tabBlocs) {
+vector<Page> chargerPages() {
     cout << "Chargement des pages ... ";
-    string nomFichier("bdd.txt");
+    string nomFichier("UI/bdd.txt");
+    const int taillePage(512);
+    ifstream fBDD(nomFichier.c_str());
+    char cara;
+    string chaine;
+    int i(0), j(0), y;
+    Page p;
+    vector <Page> pages;
     
-    int interval(512), i(0);
-    ifstream fichier(nomFichier.c_str());
-    int tailleF = tailleFichier(nomFichier);
-    string ligne;
-    if(fichier) {
-        if(fichierPagesValide(nomFichier)){
-            //R�cup�re la seule ligne du fichier
-            getline(fichier, ligne);
-            //Extraction de 8 caract�res pas 8 caract�res
-            while(i < (tailleF / interval)) {
-                tabBlocs.push_back(ligne.substr(0, interval).c_str());
-                ligne = ligne.substr(interval);
-                i++;
+    if(fBDD){
+        while(fBDD.get(cara)){
+            if(j < taillePage) {
+                //Si il est nécessaire de convertir de l'ASCII vers le binaire
+                chaine = std::bitset< 8 >( cara ).to_string();
+                //Si directement binaire
+                p.e[j] = cara;
             }
-            cout << "ok." << endl;
-        } else {
-            cout << endl << "ERREUR: Fichier Invalide : " << endl;
-            cout << "- " << nomFichier << endl;
+            ++j;
+            if(j == taillePage) {
+                pages.push_back(p);
+            }
+            ++i;
         }
     } else {
-        cout << endl << "ERREUR: Impossible d'ouvrir le fichier :" << endl;
-        cout << "- " << nomFichier << endl;
+        afficherPbmOuverture(nomFichier);
+    }
+    return pages;
+}
+
+/* Sauvegarde les pages d'une relation de la mémoire vive vers
+ * la mémoire persistance.
+ */
+void sauvegarderPages(char tabBlocs[][512], int nbPages, bool aLaFin) {
+    const int taillePage(512);
+    int i(0);
+    string chaine("");
+    string nomFichier("UI/bdd.txt");
+    ofstream fBDD;
+    if(aLaFin){
+        fBDD.open(nomFichier.c_str(), ios::app);
+    } else {
+        fBDD.open(nomFichier.c_str());
+    }
+    if(fBDD) {
+        cout << "Enregistrement des pages dans le fichier ... ";
+        for(i= 0; i< nbPages; ++i)  {
+            for(int j= 0; j< taillePage; ++j) {
+                chaine += tabBlocs[i][j];
+                if(chaine.size() == 8){
+                    
+                    //En caractères ASCII
+                    //fBDD << char(bitset< 8 >(chaine).to_ulong());
+                    
+                    //En bits
+                    fBDD << chaine;
+                    
+                    cout << "Chaine : " << chaine << endl;
+                    chaine.clear();
+                }
+            }
+        }
+        cout << "ok : " << i << " bloc(s) enregistré(s). " << endl;
+    } else {
+        afficherPbmOuverture(nomFichier);
     }
 }
 
-/* Sauvegarde les pages d'une relation de la m�moire vive vers
- * la m�moire persistance.
- */
-void sauvegarderPages(vector<string> & tabBlocs) {
-    cout << "Enregistrement des pages dans le fichier ... ";
-    string nomFichier("bdd.txt");
-    ofstream fichier(nomFichier.c_str());
-    if(fichier) {
-        int i;
-        for(i= 0; i< tabBlocs.size(); ++i) {
-            if(tabBlocs[i].size() == 64) {
-                fichier << tabBlocs[i] << endl;
-            } else {
-                cout << "Bloc " << i << "--> taille incorrecte." << endl;
-            }
-        }
-        cout << "ok : " << i << " bloc(s) enregistr�(s). " << endl;
-    } else {
-        cout << endl << "ERREUR: Impossible d'ouvrir le fichier :" << endl;
-        cout << "- " << nomFichier << endl;
-    }
-}
-
-/* Chargement du sch�ma de la bdd en m�moire vive.
- * Une relation :
- * - 1er cara : IDRelation
- * - 2/6 : nom du champ
- * - 7 : type de champ 
- */
 void chargerSchema(vector<string> &tabSchema) {
     cout << "Chargement du sch�ma ... ";
     string nomFichier("schema.txt");
