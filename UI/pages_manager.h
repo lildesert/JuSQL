@@ -11,9 +11,9 @@ using namespace std;
 #include <list>
 #include "files.h"
 
-void creerEnregistrement(string IDRelation, int nbMaxNUplets, list<string> Nuplet);
+bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet);
 
-void allouerPages(char IDRelation[], int nbMaxNuplets, list<string> Nuplet);
+void allouerPages(string IDRelation, int nbMaxNuplets, string nUplet);
 
 void AfficherPages();
 
