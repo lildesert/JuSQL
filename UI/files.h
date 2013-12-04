@@ -21,7 +21,7 @@ void chargerSchema(vector<string> &tabSchema);
 
 void enregistrerSchema();
 
-void sauvegarderPages(char tabBlocs[][512], int nbPages, bool aLaFin);
+void sauvegarderPages(vector<Page> pages, bool aLaFin);
 
 bool fichierPagesValide(string nomFichier);
 
