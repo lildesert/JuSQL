@@ -13,7 +13,7 @@ using namespace std;
 
 void creerEnregistrement(string IDRelation, int nbMaxNUplets, list<string> Nuplet);
 
-void allouerPages(string IDRelation, int nbMaxNuplets, list<string> nUplet);
+void allouerPages(char IDRelation[], int nbMaxNuplets, list<string> Nuplet);
 
 void AfficherPages();
 
