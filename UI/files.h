@@ -5,6 +5,9 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <bitset>
+
+#include "page.h"
 
 using namespace std;
 
@@ -12,13 +15,13 @@ void afficherPbmOuverture(string nomFichier);
 
 void viderFichier(string nomFichier);
 
-void chargerPages(vector<string> & tabBlocs);
+vector<Page> chargerPages();
 
 void chargerSchema(vector<string> &tabSchema);
 
 void enregistrerSchema();
 
-void sauvegarderPages(vector<string> & tabBlocs);
+void sauvegarderPages(char tabBlocs[][512], int nbPages, bool aLaFin);
 
 bool fichierPagesValide(string nomFichier);
 
