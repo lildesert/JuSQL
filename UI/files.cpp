@@ -3,25 +3,63 @@
 
 using namespace std;
 
+// Pour changer de mode de sauvegarde facilement
+// 1 ASCII
+// 2 Binaire
+int modeF() {
+    return 2;
+}
+
+// Retourne le chemin du fichier de bdd
+string fichierBDD() {
+    string f("UI/bdd.txt");
+    return f;
+}
+
+// Retourne le chemin du fichier Relation - Pages
+string fichierRPages() {
+    string f("UI/R_Pages.txt");
+    return f;
+}
+
 void afficherPbmOuverture(string nomFichier){
     cout << endl << "ERREUR: Impossible d'ouvrir le fichier :" << nomFichier << endl;
 }
 
 void viderFichier(string nomFichier){
     //Cette ouverture supprime le contenu existant
-    ifstream fichier(nomFichier.c_str()); 
+    ofstream fichier(nomFichier.c_str()); 
     if(! fichier){
         afficherPbmOuverture(nomFichier);
     }
+}
+
+// Retourne la position d'une page dans le fichier Bdd
+// en fonction du codage implémenté
+int getPositionPage() {
+    ifstream fPages(fichierBDD().c_str());
+    int position(-1);
+    if(fPages) {
+        fPages.seekg(0, ios::end);
+        if(fPages.tellg() > 0 && modeF() == 2) {
+            position = fPages.tellg() / 512;
+        } else if (fPages.tellg() > 0 && modeF() == 1) {
+            position = fPages.tellg() / 64;
+        } else {
+            position = 0;
+        }
+    } else {
+        afficherPbmOuverture(fichierBDD());
+    }
+    return position;
 }
 
 /* Charge les pages depuis la mémoire persistantes vers la mémoire vive
  */
 vector<Page> chargerPages() {
     cout << "Chargement des pages ... ";
-    string nomFichier("UI/bdd.txt");
     const int taillePage(512);
-    ifstream fBDD(nomFichier.c_str());
+    ifstream fBDD(fichierBDD().c_str());
     char cara;
     string chaine;
     int i(0), j(0), y;
@@ -43,7 +81,7 @@ vector<Page> chargerPages() {
             ++i;
         }
     } else {
-        afficherPbmOuverture(nomFichier);
+        afficherPbmOuverture(fichierBDD());
     }
     return pages;
 }
@@ -55,12 +93,11 @@ void sauvegarderPages(vector<Page> pages, bool aLaFin) {
     const int taillePage(512);
     int i(0);
     string chaine("");
-    string nomFichier("UI/bdd.txt");
     ofstream fBDD;
     if(aLaFin){ // Insertion à la fin du fichier
-        fBDD.open(nomFichier.c_str(), ios::app);
+        fBDD.open(fichierBDD().c_str(), ios::app);
     } else { // Ecrasement de l'existant
-        fBDD.open(nomFichier.c_str());
+        fBDD.open(fichierBDD().c_str());
     }
     if(fBDD) {
         cout << "Enregistrement des pages dans le fichier ... ";
@@ -81,7 +118,7 @@ void sauvegarderPages(vector<Page> pages, bool aLaFin) {
         }
         cout << "ok : " << i << " bloc(s) enregistré(s). " << endl;
     } else {
-        afficherPbmOuverture(nomFichier);
+        afficherPbmOuverture(fichierBDD());
     }
 }
 
