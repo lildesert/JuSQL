@@ -11,6 +11,14 @@
 
 using namespace std;
 
+int modeF();
+
+string fichierBDD();
+
+string fichierRPages();
+
+int getPositionPage();
+
 void afficherPbmOuverture(string nomFichier);
 
 void viderFichier(string nomFichier);
