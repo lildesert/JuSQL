@@ -14,72 +14,47 @@ void allouerPages(string IDRelation, int nbMaxNuplets, string nUplet) {
     // Initialisations
     int i(0), j(0);
     const int taillePage(512);
+    
     vector<Page> newPage;
     Page p;
-    int adresseNouveauBloc;
-    //Lecture des deux fichiers avec curseur à la fin
-    ifstream fPages("UI/bdd.txt");
-    ofstream fRelationPages("UI/R_Pages.txt");
     
-    string IDBloc = '00000010';
+    int position(getPositionPage());
     
-    if(fPages) {
-        fPages.seekg(0, ios::end);
-        if(fRelationPages) {
-            fRelationPages.seekp(0, ios::end);
-            
-            if(fPages.tellg() > 0) {
-                //Sauvegarde de la position dans le fichier si bits
-                adresseNouveauBloc = fPages.tellg() / 512;
-                //Sauvegarde de la position dans le fichier si ASCII
-                //adresseNouveauBloc = fPages.tellg() / 64;
-            } 
-            
-            //Ecriture de l'octet de la l'identifiant du bloc
-            for(i= 0; i< 8; i++){
-                p.e[j] = IDBloc[i];
-                ++j;
-            }
-            // Zone de gestion initialisée à zéro sauf si on intègre directement un enregistrement
-            for(i= 0; i< nbMaxNuplets; ++i){
-                if(nUplet.size() != 0 && i== 0) {
-                    // On insère en même temps un enregistrement
-                    p.e[j] = '1'; 
-                } else {
-                    p.e[j] = '0';
-                }
-                ++j;
-            }
-            if(nUplet && nUplet.size() > 0){
-                // Insertion du N-Uplet passés en paramètres
-                for(i= 0; i< nUplet.size(); ++i){
-                    p.e[j] = nUplet[i];
-                    ++j;
-                }
-            }
-            //On réserve l'emplacement pour la page avec des 0
-            while(j < taillePage) {
-                p.e[j] = '0';
-                ++j;
-            }
-            //Mise à jour du fichier Relation - Pages
-            fRelationPages << endl << IDRelation;
-            
-            fRelationPages << bitset< 8 >( adresseNouveauBloc ).to_string();
-            
-            newPage.push_back(p);
-            sauvegarderPages(newPage, 1, true);
-        } else {
-            afficherPbmOuverture("UI/R_Pages.txt");
-        }
-    } else {
-        afficherPbmOuverture("UI/bdd.txt");
+    string IDBloc = getNextIDBloc();
+    //Ecriture de l'octet de la l'identifiant du bloc
+    for(i= 0; i< 8; i++){
+        p.e[j] = IDBloc[i];
+        ++j;
     }
+    // Zone de gestion initialisée à zéro sauf si on intègre directement un enregistrement
+    for(i= 0; i< nbMaxNuplets; ++i){
+        if(nUplet.size() != 0 && i== 0) {
+            // On insère en même temps un enregistrement
+            p.e[j] = '1'; 
+        } else {
+            p.e[j] = '0';
+        }
+        ++j;
+    }
+    if(! nUplet.empty()){
+        // Insertion du N-Uplet passés en paramètres
+        for(i= 0; i< nUplet.size(); ++i){
+            p.e[j] = nUplet[i];
+            ++j;
+        }
+    }
+    //On réserve l'emplacement pour la page avec des 0
+    while(j < taillePage) {
+        p.e[j] = '0';
+        ++j;
+    }
+    ajouterAdressage(IDRelation, position);
+
+    newPage.push_back(p);
+    sauvegarderPages(newPage, true);
 }
 
-/* Création un nouvel enregistrement pour la relation R
- * 
- */
+// Création un nouvel enregistrement pour la relation R
 bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
 
     //Contiendra toutes les adresses des pages allouées pour R
@@ -87,13 +62,13 @@ bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
     int i, j;
     const int tailleIDBloc(8);
     // Ouverture du fichier contenant toutes les adresses de pages allouées aux relations
-    ifstream fRelationPages("UI/R_Pages.txt");
+    ifstream fRelationPages(fichierRPages().c_str());
     if(fRelationPages) {
         string tmpIDRelation;
         string addrPage;
         
         string ligne;
-        while (fRelationPages.getline(ligne)) {
+        while (getline(fRelationPages, ligne)) {
             tmpIDRelation = ligne.substr(0, 8);
             addrPage = ligne.substr(9, 16);
             if(IDRelation.compare(tmpIDRelation)){
@@ -101,7 +76,7 @@ bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
             }
         }
     } else {
-        afficherPbmOuverture("UI/R_Pages.txt");
+        afficherPbmOuverture(fichierRPages());
         return false;
     }
     // Chargement des pages en mémoire vive
@@ -110,26 +85,26 @@ bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
     //a une place libre pour l'enregistrement
     bool aucunePlaceLibre(true);
     if(adressesPages.size() > 0){
-        ifstream fPages("UI/bdd.txt");
+        ifstream fPages(fichierBDD().c_str());
         if(fPages) {
             string zoneLibre;
             for(int u(0); u < adressesPages.size(); ++u){
                 for(int v(0); v < nbMaxNUplets; ++v) {
-                    if(pages[u].e[tailleIDBloc + v] == "0"){
+                    if(pages[u].e[tailleIDBloc + v] == '0'){
                         // La zone de gestion indique qu'il reste une place dans cette page
                         // On écrit alors l'enregistrement à cet emplacement
                         for(int w(0); w < nUplet.size(); ++w) {
                             pages[u].e[tailleIDBloc + nbMaxNUplets + w] = nUplet[w];
                         }
                         // Le bit de présence est passé à 1
-                        pages[u].e[tailleIDBloc + v]pages[u] = "1";
+                        pages[u].e[tailleIDBloc + v] = '1';
                         sauvegarderPages(pages, false);
                         return true;
                     }
                 }
             }
         } else {
-            afficherPbmOuverture("UI/bdd.txt");
+            afficherPbmOuverture(fichierBDD());
             return false;
         }
     }
@@ -137,6 +112,128 @@ bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
     if(aucunePlaceLibre) {
         allouerPages(IDRelation, nbMaxNUplets, nUplet);
         return true;
+    }
+}
+
+// Rettourne le prochain identifiant de page possible
+string getNextIDBloc() {
+    vector<Page> pages = chargerPages();
+    string IDBlocTMP("");
+    string IDBlocMAX("00000000");
+    int u;
+    for(int i(0); i< pages.size(); ++i){
+        IDBlocTMP.clear();
+        for(u= 0; u< 8; ++u){
+            IDBlocTMP += pages[i].e[u];
+        }
+        if(bitset< 8 >(IDBlocTMP).to_ulong() > bitset< 8 >(IDBlocMAX).to_ulong()){
+            IDBlocMAX.clear();
+            IDBlocMAX = IDBlocTMP;
+        }
+    }
+    int p = bitset< 8 >(IDBlocMAX).to_ulong() + 1;
+    return bitset< 8 >(p).to_string();
+}
+
+void afficherPagesBrut(){
+    vector<Page> pages = chargerPages();
+    int i, j;
+    const int taillePage(512);
+    for(i= 0; i< pages.size(); ++i){
+        for(j= 0; j< taillePage; ++j){
+            cout << pages[i].e[j];
+        }
+        cout << endl;
+    }
+}
+
+// Désallocation d'une page qui n'a plus de nuplet
+void desallouerPage(string IDPage) {
+    vector<Page> pages = chargerPages();
+    int i, j;
+    string IDBlocTMP;
+    bool blocTrouve(false);
+    const int taillePage(512);
+    for(i= 0; i< pages.size(); ++i){
+        for(j= 0; j< 8; ++j){
+            IDBlocTMP += pages[i].e[j];
+        }
+        if(IDPage.compare(IDBlocTMP)){
+            blocTrouve = true;
+            // Suppression de la page et sauvegarde en mémoire persistante
+            pages.erase(pages.begin() + i);
+            sauvegarderPages(pages, false);
+            // Suppression d'une ligne d'adresse dans R_Pages
+            supprimerAdressage(i);
+        }
+    }
+    if(!blocTrouve){
+        cout << "Page non trouvée pour l'identifiant : " << IDPage << endl;
+    }
+}
+
+// Ajoute une adresse de bloc pour la relation R
+void ajouterAdressage(string IDRelation, int position){
+    ofstream fRelationPages(fichierRPages().c_str());
+    if(fRelationPages) {
+        fRelationPages.seekp(0, ios::end);
+        fRelationPages << endl << IDRelation;
+        fRelationPages << bitset< 8 >( position ).to_string();
+    } else {
+        afficherPbmOuverture(fichierRPages());
+    }
+}
+
+// Supprime l'adressage d'une page pour une relation
+// En paramètre : la position de la page
+void supprimerAdressage(int position) {
+    ifstream fRelationPages(fichierRPages().c_str());
+    string ligne, adresse;
+    vector<string> all;
+    if(fRelationPages) {
+        fRelationPages.seekg(0, ios::end);
+        while(getline(fRelationPages, ligne)){
+            adresse = std::bitset< 8 >( position ).to_string();
+            if(! adresse.compare(ligne.substr(9, 16))){
+                all.push_back(ligne);
+            }
+        }
+        // On crée un fichier temporaire
+        string nomfTMP("UI/R_Pages_TMP.txt");
+        ofstream fRPagesTMP(nomfTMP.c_str());
+        if(fRPagesTMP) {
+            for(int i(0); i< all.size(); ++i){
+                fRPagesTMP << all[i] << endl;
+            }
+        } else {
+            afficherPbmOuverture(nomfTMP);
+        }
+    } else {
+        afficherPbmOuverture(fichierRPages());
+    }    
+}
+
+// Affiche le contenu d'une Page dont l'identifiant est donné en paramètre
+void afficherPage(string IDPage) {
+    vector<Page> pages = chargerPages();
+    int i, j;
+    string IDBlocTMP;
+    bool blocTrouve(false);
+    const int taillePage(512);
+    for(i= 0; i< pages.size(); ++i){
+        for(j= 0; j< 8; ++j){
+            IDBlocTMP += pages[i].e[j];
+        }
+        if(IDPage.compare(IDBlocTMP)){
+            blocTrouve = true;
+            for(j= 0; j< taillePage; ++j){
+                cout << pages[i].e[j];
+            }
+        }
+    }
+    cout << endl;
+    if(!blocTrouve){
+        cout << "Page non trouvée pour l'identifiant : " << IDPage << endl;
     }
 }
 
@@ -255,20 +352,3 @@ string getBlocIDRelation(string bloc){
 string getBlocContent(string bloc){
     return bloc.substr(1).c_str();
 }
-
-string getTableIDRelation(string table){
-    return table.substr(0, 1);
-}
-
-/*vector<string> getTableChamps(string table){
-    vector<string> champs;
-    table.substr(1).c_str();
-}*/
-
-/*if(typeChamp == "A") { //Entier
-                contenu = ligne.substr(0, 1).c_str();
-                ligne = ligne.substr(1);
-            } else if (typeChamp == "B") { //String
-                contenu = ligne.substr(0, 10).c_str();
-                ligne = ligne.substr(10);
-            }*/
