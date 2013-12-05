@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 #include <list>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
+//#include <boost/archive/text_oarchive.hpp>
+//#include <boost/archive/text_iarchive.hpp>
 
 
 #include "files.h"
@@ -13,6 +13,7 @@
 #include "interface.h"
 #include "schema.h"
 #include "common.h"
+#include "test.h"
 
 using namespace std; 
 
@@ -24,38 +25,12 @@ int main(int argc, char** argv) {
     std::ifstream deserialization("UI/Schema.txt");
 	if(deserialization)
 	{
-		boost::archive::text_iarchive ia(deserialization);
-		ia >> Schema::GetInstance();
+		//boost::archive::text_iarchive ia(deserialization);
+		//ia >> Schema::GetInstance();
 	}
-
-    //Chargement des pages en mémoire vive
-    vector<string> tabSchema; // Tableau contenant le schéma de la base
-    vector<string> tabBlocs; // Tableau des blocs
     
-    //Réinitialisation == A enlever pour soutenance
-    //viderFichier("UI/bdd.txt");
-    //viderFichier("UI/R_pages.txt");
+    //tester();
     
-    /*string str("00000010");
-    
-    std::bitset<8> c(str);
-    
-    unsigned long i = c.to_ulong(); 
-    char c2 = (char) "5";
-    
-    cout << "c : " << c << endl;
-    cout << "i : " << i << endl;
-    cout << "c2 : " << c2 << endl;
-    
-    std::cout << "c=" << c << " char(c.to_ulong())=" << char(c.to_ulong()) << "\n";
-    
-    cout << bitset< 8 >(str) << endl;
-    cout << char(bitset< 8 >(str).to_ulong()) << endl;
-    
-    AfficherPages(); */
-    
-    AfficherSchema(tabSchema);
-        
     // Lancement du menu principal de l'application
     bool continuer = true;
 	int choix = MenuPrincipal();
@@ -101,6 +76,6 @@ int main(int argc, char** argv) {
 		boost::archive::text_oarchive oa(serialization);
 		oa << const_cast<Schema &>(Schema::GetInstance());
 	}
-
+     
     return 0;
 }
