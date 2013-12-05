@@ -11,7 +11,17 @@ using namespace std;
 #include <list>
 #include "files.h"
 
+string getNextIDBloc();
+
+void ajouterAdressage(string IDRelation, int position);
+
+void afficherPagesBrut();
+
+void afficherPage(string IDPage);
+
 bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet);
+
+void supprimerAdressage(int position);
 
 void allouerPages(string IDRelation, int nbMaxNuplets, string nUplet);
 
@@ -24,10 +34,6 @@ void AfficherSchema(vector<string> &tabSchema);
 string getBlocIDRelation(string Bloc);
 
 string getBlocContent(string bloc);
-
-string getTableIDRelation(string table);
-
-vector<string> getTableChamps(string table);
 
 #endif	/* PAGES_MANAGER_H */
 
