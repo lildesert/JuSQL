@@ -41,4 +41,7 @@ private:
 		ar & listRelation;
     }
 };
+
+BOOST_CLASS_TRACKING(Schema, boost::serialization::track_never)
+
 #endif	/* SCHEMA_H */

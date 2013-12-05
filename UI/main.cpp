@@ -22,11 +22,11 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
-    std::ifstream deserialization("UI/Schema.txt");
+    std::ifstream deserialization("UI/schema.txt");
 	if(deserialization)
 	{
-		//boost::archive::text_iarchive ia(deserialization);
-		//ia >> Schema::GetInstance();
+		boost::archive::text_iarchive ia(deserialization);
+		ia >> Schema::GetInstance();
 	}
     
     //tester();
@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
     }
     cout << "--------- Exit ---------" << endl;
 
-	std::ofstream serialization("UI/Schema.txt");
+	std::ofstream serialization("UI/schema.txt");
 	if(serialization)
 	{
 		boost::archive::text_oarchive oa(serialization);
