@@ -37,5 +37,7 @@ void enregistrerSchema();
 
 int tailleFichier(string nomFichier);
 
+bool IsFileEmpty(std::ifstream& pFile);
+
 #endif	/* FILES_H */
 

@@ -22,3 +22,8 @@ void Relation::addAttribut(Attribut a)
 {
 	(this->listAttribut).push_back(a);
 }
+
+string Relation::getNom()
+{
+	return this->nomRelation;
+}

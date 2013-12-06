@@ -17,6 +17,8 @@ public:
 	static int idIncrementSchema;
 	void setNom(string nom);
 	void setId(int id);
+	int getId();
+	string getNom();
 
 	static Schema& GetInstance()
 	{
