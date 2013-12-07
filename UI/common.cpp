@@ -1,5 +1,10 @@
 #include "common.h"
 
+#   ifdef _WIN32
+#	include <windows.h>
+#   endif
+
+
 using namespace std;
 
 //Affiche un menu dont le titre est passé en paramètre et dont les choix sont dans le tableau menuLn
@@ -37,11 +42,12 @@ void ClearScreen()
 	PrintLn("--------- JuSQL ---------");
 }
 
+//Stoppe l'exécution du programme pendant le nombre de secondes passées en paramètre
 void PortableSleep(int sec) {
-#   ifdef POSIX
+#   ifdef __linux__
         sleep(sec);
 #   endif
-#   ifdef WINDOWS
+#   ifdef _WIN32
         Sleep(sec * 1000);
 #   endif
 }

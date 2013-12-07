@@ -18,6 +18,7 @@ public:
 	~Relation(void);
 	static int idIncrementRelation;
 	void addAttribut(Attribut a);
+	string getNom();
 private:
 	int idRelation;
 	string nomRelation;

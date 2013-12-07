@@ -160,7 +160,7 @@ void sauvegarderPages(vector<Page> pages, bool aLaFin) {
 }
 
 void chargerSchema(vector<string> &tabSchema) {
-    cout << "Chargement du sch�ma ... ";
+    cout << "Chargement du schéma ... ";
     string nomFichier("schema.txt");
     ifstream fichier(nomFichier.c_str());
     
@@ -194,7 +194,7 @@ void chargerSchema(vector<string> &tabSchema) {
     }
 }
 
-//Retourne le nombre de caract�res d'un fichier
+//Retourne le nombre de caractères d'un fichier
 int tailleFichier(string nomFichier) {
     ifstream fichier(nomFichier.c_str());
     fichier.seekg(0, ios::end);
@@ -210,4 +210,9 @@ bool fichierPagesValide(string nomFichier, bool modeASCII){
     } else {
         return (tailleFichier(nomFichier) % 512 == 0);
     }
+}
+
+bool IsFileEmpty(std::ifstream& pFile)
+{
+    return pFile.peek() == std::ifstream::traits_type::eof();
 }

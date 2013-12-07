@@ -17,6 +17,8 @@ public:
 	static int idIncrementSchema;
 	void setNom(string nom);
 	void setId(int id);
+	int getId();
+	string getNom();
 
 	static Schema& GetInstance()
 	{
@@ -41,4 +43,7 @@ private:
 		ar & listRelation;
     }
 };
+
+BOOST_CLASS_TRACKING(Schema, boost::serialization::track_never)
+
 #endif	/* SCHEMA_H */

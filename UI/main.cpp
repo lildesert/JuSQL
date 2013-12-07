@@ -1,11 +1,11 @@
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <list>
-//#include <boost/archive/text_oarchive.hpp>
-//#include <boost/archive/text_iarchive.hpp>
-
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
 #include "files.h"
 #include "pages_manager.h"
@@ -22,12 +22,16 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
-    /*std::ifstream deserialization("UI/Schema.txt");
+	string serialFile = "schema.txt";
+	ifstream deserialization(serialFile);
 	if(deserialization)
 	{
-		boost::archive::text_iarchive ia(deserialization);
-		ia >> Schema::GetInstance();
-	}*/
+		if(!IsFileEmpty(deserialization))
+		{
+			boost::archive::text_iarchive ia(deserialization);
+			ia >> Schema::GetInstance();
+		}
+	}
     
     tester();
     
@@ -39,21 +43,26 @@ int main(int argc, char** argv) {
         {
             case 1: {
 				int choix2 = MenuSchema();
-				switch(choix2)
+				bool continuer2 = true;
+				while(continuer2)
 				{
-					case 1: {
-						CreateSchema();
-						PortableSleep(3);
-						choix2 = MenuSchema();
-						break;
-					}
-					case 2: {
-						cout << "2" << endl;
-						break;
-					}
-					case 3: {
-						choix = MenuPrincipal();
-						break;
+					switch(choix2)
+					{
+						case 1: {
+							CreateSchema();
+							PortableSleep(2);
+							choix2 = MenuSchema();
+							break;
+						}
+						case 2: {
+							cout << "2" << endl;
+							break;
+						}
+						case 3: {
+							choix = MenuPrincipal();
+							continuer2 = false;
+							break;
+						}
 					}
 				}
                 break;
@@ -70,12 +79,15 @@ int main(int argc, char** argv) {
     }
     cout << "--------- Exit ---------" << endl;
 
-	std::ofstream serialization("UI/Schema.txt");
+	ofstream serialization(serialFile);
 	if(serialization)
 	{
-		boost::archive::text_oarchive oa(serialization);
-		oa << const_cast<Schema &>(Schema::GetInstance());
-	}*/
+		if(Schema::GetInstance().getNom() != "")
+		{
+			boost::archive::text_oarchive oa(serialization);
+			oa << const_cast<Schema &>(Schema::GetInstance());
+		}
+	}
      
     return 0;
 }
