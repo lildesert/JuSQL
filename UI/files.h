@@ -15,6 +15,10 @@ string intToBin(int entier);
 
 int binToInt(string bin);
 
+string intToBin8(int entier);
+
+int bin8ToInt(string bin);
+
 string asciiToBin(string ascii);
 
 string binToAscii(string bin);

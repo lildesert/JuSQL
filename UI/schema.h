@@ -9,6 +9,7 @@
 #include <boost/serialization/vector.hpp>
 
 #include "Relation.h"
+#include "files.h"
 
 class Schema
 {
@@ -19,6 +20,7 @@ public:
 	void setId(int id);
 	int getId();
 	string getNom();
+	Relation GetRelationById(string id);
 
 	static Schema& GetInstance()
 	{

@@ -2,9 +2,9 @@
 
 using namespace std;
 
-int Attribut::idIncrementAttribut = 0;
+int Attribut::idIncrementAttribut = 1;
 
-Attribut::Attribut(string nomA, string typeA, string tailleA)
+Attribut::Attribut(string nomA, string typeA, int tailleA)
 {
 	nomAttribut = nomA;
 	typeAttribut = typeA;
@@ -19,4 +19,14 @@ Attribut::~Attribut(void)
 
 Attribut::Attribut()
 {
+}
+
+int Attribut::GetTaille()
+{
+	return this->tailleAttribut;
+}
+
+string Attribut::GetType()
+{
+	return this->typeAttribut;
 }

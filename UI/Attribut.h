@@ -12,15 +12,18 @@ using namespace std;
 class Attribut
 {
 public:
-	Attribut(string nomA, string typeA, string tailleA);
+	Attribut(string nomA, string typeA, int tailleA);
 	~Attribut(void);
 	Attribut();
 	static int idIncrementAttribut;
+	int GetTaille();
+	string GetType();
+
 private:
 	int idAttribut;
 	string nomAttribut;
 	string typeAttribut;
-	string tailleAttribut;
+	int tailleAttribut;
 
 	friend class boost::serialization::access;
         

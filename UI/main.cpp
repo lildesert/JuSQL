@@ -22,7 +22,7 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
-	/*string serialFile = "schema.txt";
+	string serialFile = "schema.txt";
 	ifstream deserialization(serialFile.c_str());
 	if(deserialization)
 	{
@@ -31,12 +31,23 @@ int main(int argc, char** argv) {
 			boost::archive::text_iarchive ia(deserialization);
 			ia >> Schema::GetInstance();
 		}
-	}*/
+	}
+
+	//Test de la fonction NbMaxNuplet
+	Relation r("test");
+	Attribut a1("id", "int", 4);
+	Attribut a2("lib", "string", 4);
+	r.addAttribut(a1);
+	r.addAttribut(a2);
+	Schema::GetInstance().addRelation(r);
+
+	int test = Schema::GetInstance().GetRelationById("00000001").NbMaxNuplets();
     
+
     tester();
     
     // Lancement du menu principal de l'application
-    /*bool continuer = true;
+    bool continuer = true;
 	int choix = MenuPrincipal();
     while (continuer) {
         switch (choix)
@@ -88,6 +99,6 @@ int main(int argc, char** argv) {
 			oa << const_cast<Schema &>(Schema::GetInstance());
 		}
 	}
-     */
+   
     return 0;
 }

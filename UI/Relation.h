@@ -19,6 +19,12 @@ public:
 	static int idIncrementRelation;
 	void addAttribut(Attribut a);
 	string getNom();
+	int GetTailleNuplet();
+	int GetId();
+	vector<int> GetTaillesAttributs();
+	vector<string> GetTypesAttributs();
+	int NbMaxNuplets();
+
 private:
 	int idRelation;
 	string nomRelation;
