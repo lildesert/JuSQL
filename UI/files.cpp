@@ -89,15 +89,14 @@ int getPositionPage() {
     return position;
 }
 
-/* Charge les pages depuis la mémoire persistantes vers la mémoire vive
- */
+// Charge les pages depuis la mémoire persistantes vers la mémoire vive
 vector<Page> chargerPages() {
-    cout << "Chargement des pages ... " << endl;
+    //cout << "Chargement des pages ... " << endl;
     const int taillePage(512);
     ifstream fBDD(fichierBDD().c_str());
     char cara;
     string chaine;
-    int i(0), j(0), y;
+    int j(0), y;
     Page p;
     vector <Page> pages;
     
@@ -109,12 +108,12 @@ vector<Page> chargerPages() {
                 //chaine = asciiToBin(cara);
                 //Si directement binaire
                 p.e[j] = cara;
+                ++j;
             }
-            ++j;
-            if(j == (taillePage - 1)) {
+            if(j == taillePage) {
                 pages.push_back(p);
+                j = 0;
             }
-            ++i;
         }
     } else {
         afficherPbmOuverture(fichierBDD());
@@ -136,7 +135,7 @@ void sauvegarderPages(vector<Page> pages, bool aLaFin) {
         fBDD.open(fichierBDD().c_str());
     }
     if(fBDD) {
-        cout << "Enregistrement des pages dans le fichier ... ";
+        //cout << "Enregistrement des pages dans le fichier ... ";
         for(i= 0; i< pages.size(); ++i)  {
             for(int j= 0; j< taillePage; ++j) {
                 chaine += pages[i].e[j];

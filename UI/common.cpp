@@ -4,6 +4,12 @@
 #	include <windows.h>
 #   endif
 
+#   ifdef __linux__
+#       include <unistd.h>
+#   endif
+
+
+
 
 using namespace std;
 

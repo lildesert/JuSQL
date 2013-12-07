@@ -22,8 +22,8 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
-	string serialFile = "schema.txt";
-	ifstream deserialization(serialFile);
+	/*string serialFile = "schema.txt";
+	ifstream deserialization(serialFile.c_str());
 	if(deserialization)
 	{
 		if(!IsFileEmpty(deserialization))
@@ -31,12 +31,12 @@ int main(int argc, char** argv) {
 			boost::archive::text_iarchive ia(deserialization);
 			ia >> Schema::GetInstance();
 		}
-	}
+	}*/
     
     tester();
     
     // Lancement du menu principal de l'application
-    bool continuer = true;
+    /*bool continuer = true;
 	int choix = MenuPrincipal();
     while (continuer) {
         switch (choix)
@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
     }
     cout << "--------- Exit ---------" << endl;
 
-	ofstream serialization(serialFile);
+	ofstream serialization(serialFile.c_str());
 	if(serialization)
 	{
 		if(Schema::GetInstance().getNom() != "")
@@ -88,6 +88,6 @@ int main(int argc, char** argv) {
 			oa << const_cast<Schema &>(Schema::GetInstance());
 		}
 	}
-     
+     */
     return 0;
 }

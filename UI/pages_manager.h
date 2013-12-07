@@ -11,6 +11,10 @@ using namespace std;
 #include <list>
 #include "files.h"
 
+int deleteNupletByChamp(string IDRelation, int numChamp, string ref);
+
+vector<int> getAdressesPages(string IDRelation);
+
 string getNextIDBloc();
 
 void ajouterAdressage(string IDRelation, int position);

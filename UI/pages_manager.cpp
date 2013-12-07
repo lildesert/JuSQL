@@ -54,19 +54,13 @@ void allouerPages(string IDRelation, int nbMaxNuplets, string nUplet) {
     sauvegarderPages(newPage, true);
 }
 
-// Création un nouvel enregistrement pour la relation R
-bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
-
-    //Contiendra toutes les adresses des pages allouées pour R
+vector<int> getAdressesPages(string IDRelation) {
+    string tmpIDRelation;
+    string addrPage;
+    string ligne;
     vector<int> adressesPages;
-    const int tailleIDBloc(8);
-    // Ouverture du fichier contenant toutes les adresses de pages allouées aux relations
     ifstream fRelationPages(fichierRPages().c_str());
     if(fRelationPages) {
-        string tmpIDRelation;
-        string addrPage;
-        
-        string ligne;
         while (getline(fRelationPages, ligne)) {
             tmpIDRelation = ligne.substr(0, 8);
             addrPage = ligne.substr(9, 16);
@@ -76,8 +70,17 @@ bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
         }
     } else {
         afficherPbmOuverture(fichierRPages());
-        return false;
     }
+    return adressesPages; 
+}
+
+// Création un nouvel enregistrement pour la relation R
+bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
+
+    //Contiendra toutes les adresses des pages allouées pour R
+    vector<int> adressesPages(getAdressesPages(IDRelation));
+    const int tailleIDBloc(8);
+    
     // Chargement des pages en mémoire vive
     vector<Page> pages = chargerPages();
     
@@ -143,7 +146,7 @@ void afficherPagesBrut(){
 
 // Désallocation d'une page qui n'a plus de nuplet
 void desallouerPage(string IDPage) {
-    cout << "Désallocation de la page " << endl;
+    //cout << "Désallocation de la page " << endl;
     vector<Page> pages = chargerPages();
     int i, j;
     string IDBlocTMP;
@@ -182,30 +185,85 @@ void ajouterAdressage(string IDRelation, int position){
 // Supprime l'adressage d'une page pour une relation
 // En paramètre : la position de la page
 void supprimerAdressage(int position) {
-    ifstream fRelationPages(fichierRPages().c_str());
-    string ligne, adresse;
+    string ligne, adresse(std::bitset< 8 >( position ).to_string());
     vector<string> all;
+    ifstream fRelationPages(fichierRPages().c_str());
+        
     if(fRelationPages) {
-        fRelationPages.seekg(0, ios::end);
+        fRelationPages.seekg(0, ios::beg);
         while(getline(fRelationPages, ligne)){
-            adresse = std::bitset< 8 >( position ).to_string();
-            if(adresse.compare(ligne.substr(9, 16)) != 0){
+            if(adresse.compare(ligne.substr(8, 15)) != 0){
                 all.push_back(ligne);
             }
         }
-        // On crée un fichier temporaire
-        string nomfTMP("UI/R_Pages_TMP.txt");
-        ofstream fRPagesTMP(nomfTMP.c_str());
+        fRelationPages.close();
+        ofstream fRPagesTMP(fichierRPages().c_str());
         if(fRPagesTMP) {
             for(int i(0); i< all.size(); ++i){
                 fRPagesTMP << all[i] << endl;
             }
         } else {
-            afficherPbmOuverture(nomfTMP);
+            afficherPbmOuverture(fichierRPages().c_str());
         }
     } else {
         afficherPbmOuverture(fichierRPages());
     }    
+}
+
+// Retourne la liste des identifiants des pages concernées
+int deleteNupletByChamp(string IDRelation, int numChamp, string ref) {
+    vector<Page> pages(chargerPages());
+    vector<int> adressesPages(getAdressesPages(IDRelation));
+    int i, j, k;
+    const int tailleIDBloc(8);
+    // Normalement fonction à implémenter
+    int tailleEnregistrement(232);
+    int nbMaxNuplet(2);
+    vector<int> taillesChamps;
+    taillesChamps.push_back(32);
+    taillesChamps.push_back(200);
+    bool pageVide(true);
+    
+    if(numChamp <= taillesChamps.size()){
+        return 0;
+    }
+    // Déplacement pour aller au champ concerné
+    int deplacementChamp(0);
+    for(i= 0; i< numChamp; ++i){
+        deplacementChamp +=  taillesChamps[i]; 
+    }
+    int deplacement = tailleIDBloc + nbMaxNuplet + deplacementChamp;
+    cout << "test" << endl;
+    string champTMP("");
+    for(i= 0; i< adressesPages.size(); ++i) {
+        for(j= 0; j< nbMaxNuplet; ++j){
+            champTMP.clear();
+            if(pages[i].e[tailleIDBloc + j] == '1') {
+                for(k= 0; k< taillesChamps[i + 1]; ++k){
+                    champTMP += pages[i].e[deplacement + j * tailleEnregistrement + k];
+                }
+                if(ref.compare(champTMP) == 0) {
+                    //Suppression de l'enregistrement
+                    pages[i].e[tailleIDBloc + j] = '0';
+                }
+            }
+            // Vérification que la page n'est pas vide
+        }
+        pageVide = true;
+        for(j= 0; j< nbMaxNuplet; ++j){
+            if(pages[i].e[tailleIDBloc + j] == '1') {
+                pageVide = false;
+            }
+        }
+        if(pageVide){
+            string IDPage("");
+            for(int w(0); w< tailleIDBloc; ++w){
+                IDPage += pages[i].e[w];
+            }
+            desallouerPage(IDPage);
+        }
+    }
+    sauvegarderPages(pages, false);
 }
 
 // Affiche le contenu d'une Page dont l'identifiant est donné en paramètre
