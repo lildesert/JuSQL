@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
     tester();
     
     // Lancement du menu principal de l'application
-    /*bool continuer = true;
+    bool continuer = true;
 	int choix = MenuPrincipal();
     while (continuer) {
         switch (choix)
