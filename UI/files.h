@@ -11,6 +11,14 @@
 
 using namespace std;
 
+string intToBin(int entier);
+
+int binToInt(string bin);
+
+string asciiToBin(string ascii);
+
+string binToAscii(string bin);
+
 int modeF();
 
 string fichierBDD();

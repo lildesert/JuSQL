@@ -22,17 +22,17 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
-    std::ifstream deserialization("UI/Schema.txt");
+    /*std::ifstream deserialization("UI/Schema.txt");
 	if(deserialization)
 	{
-		//boost::archive::text_iarchive ia(deserialization);
-		//ia >> Schema::GetInstance();
-	}
+		boost::archive::text_iarchive ia(deserialization);
+		ia >> Schema::GetInstance();
+	}*/
     
-    //tester();
+    tester();
     
     // Lancement du menu principal de l'application
-    bool continuer = true;
+    /*bool continuer = true;
 	int choix = MenuPrincipal();
     while (continuer) {
         switch (choix)
@@ -75,7 +75,7 @@ int main(int argc, char** argv) {
 	{
 		boost::archive::text_oarchive oa(serialization);
 		oa << const_cast<Schema &>(Schema::GetInstance());
-	}
+	}*/
      
     return 0;
 }

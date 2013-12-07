@@ -14,13 +14,13 @@ void allouerPages(string IDRelation, int nbMaxNuplets, string nUplet) {
     // Initialisations
     int i(0), j(0);
     const int taillePage(512);
-    
     vector<Page> newPage;
     Page p;
     
     int position(getPositionPage());
     
     string IDBloc = getNextIDBloc();
+    
     //Ecriture de l'octet de la l'identifiant du bloc
     for(i= 0; i< 8; i++){
         p.e[j] = IDBloc[i];
@@ -59,7 +59,6 @@ bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
 
     //Contiendra toutes les adresses des pages allouées pour R
     vector<int> adressesPages;
-    int i, j;
     const int tailleIDBloc(8);
     // Ouverture du fichier contenant toutes les adresses de pages allouées aux relations
     ifstream fRelationPages(fichierRPages().c_str());
@@ -71,7 +70,7 @@ bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
         while (getline(fRelationPages, ligne)) {
             tmpIDRelation = ligne.substr(0, 8);
             addrPage = ligne.substr(9, 16);
-            if(IDRelation.compare(tmpIDRelation)){
+            if(IDRelation.compare(tmpIDRelation) == 0){
                 adressesPages.push_back(bitset< 8 >(addrPage).to_ulong());
             }
         }
@@ -81,31 +80,26 @@ bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
     }
     // Chargement des pages en mémoire vive
     vector<Page> pages = chargerPages();
+    
     //Pour chaque adresse trouvée ci-dessus on regarde si la page
     //a une place libre pour l'enregistrement
     bool aucunePlaceLibre(true);
     if(adressesPages.size() > 0){
-        ifstream fPages(fichierBDD().c_str());
-        if(fPages) {
-            string zoneLibre;
-            for(int u(0); u < adressesPages.size(); ++u){
-                for(int v(0); v < nbMaxNUplets; ++v) {
-                    if(pages[u].e[tailleIDBloc + v] == '0'){
-                        // La zone de gestion indique qu'il reste une place dans cette page
-                        // On écrit alors l'enregistrement à cet emplacement
-                        for(int w(0); w < nUplet.size(); ++w) {
-                            pages[u].e[tailleIDBloc + nbMaxNUplets + w] = nUplet[w];
-                        }
-                        // Le bit de présence est passé à 1
-                        pages[u].e[tailleIDBloc + v] = '1';
-                        sauvegarderPages(pages, false);
-                        return true;
+        for(int u(0); u < adressesPages.size(); ++u){
+            for(int v(0); v < nbMaxNUplets; ++v) {
+                if(pages[u].e[tailleIDBloc + v] == '0'){
+                    // La zone de gestion indique qu'il reste une place dans cette page
+                    // On écrit alors l'enregistrement à cet emplacement
+                    int debutNuplet(tailleIDBloc + nbMaxNUplets + nUplet.size()*v);
+                    for(int w(0); w < nUplet.size(); ++w) {
+                        pages[u].e[debutNuplet + w] = nUplet[w];
                     }
+                    // Le bit de présence est passé à 1
+                    pages[u].e[tailleIDBloc + v] = '1';
+                    sauvegarderPages(pages, false);
+                    return true;
                 }
             }
-        } else {
-            afficherPbmOuverture(fichierBDD());
-            return false;
         }
     }
     // Si aucune place libre il faut créer une nouvelle Page
@@ -149,6 +143,7 @@ void afficherPagesBrut(){
 
 // Désallocation d'une page qui n'a plus de nuplet
 void desallouerPage(string IDPage) {
+    cout << "Désallocation de la page " << endl;
     vector<Page> pages = chargerPages();
     int i, j;
     string IDBlocTMP;
@@ -158,7 +153,7 @@ void desallouerPage(string IDPage) {
         for(j= 0; j< 8; ++j){
             IDBlocTMP += pages[i].e[j];
         }
-        if(IDPage.compare(IDBlocTMP)){
+        if(IDPage.compare(IDBlocTMP) == 0){
             blocTrouve = true;
             // Suppression de la page et sauvegarde en mémoire persistante
             pages.erase(pages.begin() + i);
@@ -174,11 +169,11 @@ void desallouerPage(string IDPage) {
 
 // Ajoute une adresse de bloc pour la relation R
 void ajouterAdressage(string IDRelation, int position){
-    ofstream fRelationPages(fichierRPages().c_str());
+    ofstream fRelationPages(fichierRPages().c_str(), ios::app);
     if(fRelationPages) {
         fRelationPages.seekp(0, ios::end);
-        fRelationPages << endl << IDRelation;
-        fRelationPages << bitset< 8 >( position ).to_string();
+        fRelationPages << IDRelation;
+        fRelationPages << bitset< 8 >( position ).to_string() << endl;
     } else {
         afficherPbmOuverture(fichierRPages());
     }
@@ -194,7 +189,7 @@ void supprimerAdressage(int position) {
         fRelationPages.seekg(0, ios::end);
         while(getline(fRelationPages, ligne)){
             adresse = std::bitset< 8 >( position ).to_string();
-            if(! adresse.compare(ligne.substr(9, 16))){
+            if(adresse.compare(ligne.substr(9, 16)) != 0){
                 all.push_back(ligne);
             }
         }
@@ -221,10 +216,11 @@ void afficherPage(string IDPage) {
     bool blocTrouve(false);
     const int taillePage(512);
     for(i= 0; i< pages.size(); ++i){
+        IDBlocTMP.clear();
         for(j= 0; j< 8; ++j){
             IDBlocTMP += pages[i].e[j];
         }
-        if(IDPage.compare(IDBlocTMP)){
+        if(IDPage.compare(IDBlocTMP) == 0){
             blocTrouve = true;
             for(j= 0; j< taillePage; ++j){
                 cout << pages[i].e[j];
@@ -312,21 +308,6 @@ void AfficherPages() {
         }
     } else {
         afficherPbmOuverture("UI/bdd.txt");
-    }
-    cout << endl;
-}
-
-void AfficherPagesLisiblement() {
-    cout << "====== Affichage lisible des pages ======" << endl;
-    string bloc;
-    
-    cout << endl;
-}
-
-void AfficherSchema(vector<string> &tabSchema) {
-    cout << endl << "====== Affichage brut du schéma ======" << endl;
-    for(int i(0); i< tabSchema.size(); ++i) {
-        cout << i << ". " << tabSchema[i] << endl;
     }
     cout << endl;
 }

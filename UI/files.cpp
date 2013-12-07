@@ -3,6 +3,41 @@
 
 using namespace std;
 
+// Entier de type int 4 octets
+// L'entier est retourné sous forme d'une chaine de 32 bits / 4 octets
+string intToBin(int entier){
+    return bitset< 32 >( entier ).to_string();
+}
+
+// En paramètre une chaine de caractères représentants les bits
+// Retourne l'entier correspondant. 
+int binToInt(string bin) {
+    return bitset< 32 > ( bin ).to_ulong();
+}
+
+// Chaque caractère ASCII est transformé en une chaine de 8 bits
+string asciiToBin(string ascii) {
+    string bin("");
+    for(int i(0); i< ascii.size(); ++i){
+        bin += bitset< 8 >( ascii[i] ).to_string();
+    }
+    return bin;
+}
+
+// Transforme une chaine de bits en chaine de caractères ASCII
+string binToAscii(string bin) {
+    string chaine("");
+    string tmp("");
+    for(int i(0); i< bin.size(); ++i) {
+        tmp += bin[i];
+        if(tmp.size() == 8){
+            chaine += (char) bitset< 8 > ( tmp ).to_ulong();
+            tmp.clear();
+        }
+    }
+    return chaine;
+}
+
 // Pour changer de mode de sauvegarde facilement
 // 1 ASCII
 // 2 Binaire
@@ -57,7 +92,7 @@ int getPositionPage() {
 /* Charge les pages depuis la mémoire persistantes vers la mémoire vive
  */
 vector<Page> chargerPages() {
-    cout << "Chargement des pages ... ";
+    cout << "Chargement des pages ... " << endl;
     const int taillePage(512);
     ifstream fBDD(fichierBDD().c_str());
     char cara;
@@ -67,15 +102,16 @@ vector<Page> chargerPages() {
     vector <Page> pages;
     
     if(fBDD){
+        fBDD.seekg(0, ios::beg);
         while(fBDD.get(cara)){
             if(j < taillePage) {
                 //Si il est nécessaire de convertir de l'ASCII vers le binaire
-                chaine = std::bitset< 8 >( cara ).to_string();
+                //chaine = asciiToBin(cara);
                 //Si directement binaire
                 p.e[j] = cara;
             }
             ++j;
-            if(j == taillePage) {
+            if(j == (taillePage - 1)) {
                 pages.push_back(p);
             }
             ++i;
@@ -91,7 +127,7 @@ vector<Page> chargerPages() {
  */
 void sauvegarderPages(vector<Page> pages, bool aLaFin) {
     const int taillePage(512);
-    int i(0);
+    int i(0), nb(0);
     string chaine("");
     ofstream fBDD;
     if(aLaFin){ // Insertion à la fin du fichier
@@ -115,8 +151,9 @@ void sauvegarderPages(vector<Page> pages, bool aLaFin) {
                     chaine.clear();
                 }
             }
+            ++nb;
         }
-        cout << "ok : " << i << " bloc(s) enregistré(s). " << endl;
+        cout << "ok : " << nb << " bloc(s) enregistré(s). " << endl;
     } else {
         afficherPbmOuverture(fichierBDD());
     }
@@ -159,12 +196,9 @@ void chargerSchema(vector<string> &tabSchema) {
 
 //Retourne le nombre de caract�res d'un fichier
 int tailleFichier(string nomFichier) {
-    int taille(0);
     ifstream fichier(nomFichier.c_str());
     fichier.seekg(0, ios::end);
-    taille = fichier.tellg();
-    taille -= 1;
-    return taille; 
+    return fichier.tellg();
 }
 
 /*Vérifie que le fichier de pages est composé de blocs de 512bits

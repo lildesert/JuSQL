@@ -27,13 +27,11 @@ void allouerPages(string IDRelation, int nbMaxNuplets, string nUplet);
 
 void AfficherPages();
 
-void AfficherPagesLisiblement();
-
-void AfficherSchema(vector<string> &tabSchema);
-
 string getBlocIDRelation(string Bloc);
 
 string getBlocContent(string bloc);
+
+void desallouerPage(string IDPage);
 
 #endif	/* PAGES_MANAGER_H */
 
