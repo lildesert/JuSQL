@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
                 break;
             }
             case 2: {
-                int choix3 = MenuSQL();
+                int choix3 = MenuRequete();
 				bool continuer3 = true;
 				while(continuer3)
 				{
@@ -88,22 +88,22 @@ int main(int argc, char** argv) {
 					{
 						case 1: {
 							AjoutNuplet();
-							choix3 = MenuSQL();
+							choix3 = MenuRequete();
 							break;
 						}
 						case 2: {
 							EffacerNuplet();
-							choix3 = MenuSQL();
+							choix3 = MenuRequete();
 							break;
 						}
 						case 3: {
 							AfficherPagesByRelation();
-							choix3 = MenuSQL();
+							choix3 = MenuRequete();
 							break;
 						}
 						case 4: {
 							SelectWithPredicat();
-							choix3 = MenuSQL();
+							choix3 = MenuRequete();
 							break;
 						}
 						case 5: {

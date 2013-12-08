@@ -18,7 +18,7 @@ void CreateSchema();
 
 void PrintSchema();
 
-int MenuSQL();
+int MenuRequete();
 
 void AjoutNuplet();
 

@@ -25,7 +25,7 @@ int MenuSchema()
 }
 
 // Affichage du menu de la partie SQL
-int MenuSQL() {
+int MenuRequete() {
 
 	vector<string> menuLn(5);
 	menuLn[0] = "1 - Ajouter un Nuplet";
@@ -33,7 +33,7 @@ int MenuSQL() {
 	menuLn[2] = "3 - Afficher les Nuplets d'une relation";
 	menuLn[3] = "4 - Sélection de Nuplet avec prédicat";
 	menuLn[4] = "5 - Retour à l'accueil";
-	return MenuCommon("Menu SQL", menuLn);
+	return MenuCommon("Menu Requêtes", menuLn);
 }
 
 void CreateSchema()
@@ -397,7 +397,7 @@ void SelectWithPredicat()
 		chaineRetour += asciiToBin(valueA);
 	}
 
-	selectByChamp(intToBin8(r.GetId()), a.GetPosition(), chaineRetour);
+	//selectByChamp(intToBin8(r.GetId()), a.GetPosition(), chaineRetour);
 
 	Retour();
 }
