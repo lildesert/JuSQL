@@ -17,7 +17,7 @@ int binToInt(string bin) {
     return bitset< 32 > ( bin ).to_ulong();
 }
 
-// Entier de type int 4 octets
+// Entier de type int 1 octet
 // L'entier est retourné sous forme d'une chaine de 8 bits / 1 octet
 string intToBin8(int entier){
     return bitset< 8 >( entier ).to_string();

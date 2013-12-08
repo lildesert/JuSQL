@@ -1,4 +1,6 @@
 ﻿#include "interface.h"
+#include "files.h"
+#include "pages_manager.h"
 
 using namespace std;
 
@@ -133,6 +135,8 @@ void CreateSchema()
 			PrintLn("Retour au menu de gestion du schéma...");
 		}
 	}
+
+	PortableSleep(2);
 }
 
 void PrintSchema()
@@ -221,10 +225,17 @@ void AjoutNuplet()
 		if(a.GetType() == "I")
 		{
 			int nb = atoi(valueA.c_str());
-			const int taille = a.GetTaille();
-			chaineRetour += bitset< 32 >( nb ).to_string();
+			chaineRetour += intToBin(nb);
 		}
-
+		else
+		{
+			chaineRetour += asciiToBin(valueA);
+		}
 	}
 
+	creerEnregistrement(intToBin8(r.GetId()), r.NbMaxNuplets(), chaineRetour);
+
+	PrintLn("");
+	PrintLn("Nuplet ajouté !");
+	PortableSleep(2);
 }

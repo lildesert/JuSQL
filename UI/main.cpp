@@ -72,7 +72,6 @@ int main(int argc, char** argv) {
 					{
 						case 1: {
 							CreateSchema();
-							PortableSleep(2);
 							choix2 = MenuSchema();
 							break;
 						}
