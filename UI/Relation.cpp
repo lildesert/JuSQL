@@ -94,3 +94,8 @@ Attribut Relation::GetAttributByNom(string nom)
 	}
 	return a;
 }
+
+void Relation::SetNom(string nom)
+{
+	this->nomRelation = nom;
+}

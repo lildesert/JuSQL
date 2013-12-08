@@ -30,5 +30,7 @@ void Retour();
 
 void SelectWithPredicat();
 
+void ProjectionWithoutOneAtt();
+
 #endif	/* INTERFACE_H */
 

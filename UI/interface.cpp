@@ -32,7 +32,8 @@ int MenuRequete() {
 	menuLn[1] = "2 - Effacer un Nuplet";
 	menuLn[2] = "3 - Afficher les Nuplets d'une relation";
 	menuLn[3] = "4 - Sélection de Nuplet avec prédicat";
-	menuLn[4] = "5 - Retour à l'accueil";
+	menuLn[4] = "5 - Projection d'une relation sur tous ses attributs sauf un";
+	menuLn[5] = "6 - Retour à l'accueil";
 	return MenuCommon("Menu Requêtes", menuLn);
 }
 
@@ -400,4 +401,48 @@ void SelectWithPredicat()
 	//selectByChamp(intToBin8(r.GetId()), a.GetPosition(), chaineRetour);
 
 	Retour();
+}
+
+void ProjectionWithoutOneAtt()
+{
+	ClearScreen();
+
+	PrintLn("");
+	PrintLn("");
+	PrintLn("--------- Sélection de Nuplet avec prédicat ---------");
+
+	PrintLn("");
+	PrintLn("Veuillez entrer le nom de la relation sur laquelle vous souhaitez réaliser la projection : ");
+	string relation;
+	cin >> relation;
+
+	Relation r = Schema::GetInstance().GetRelationByNom(relation);
+	while(r.GetNom() == "")
+	{
+		PrintLn("");
+		PrintLn("Cette relation n'existe pas dans le schéma " +Schema::GetInstance().getNom() +", veuillez entrer le nom d'une relation : ");
+		cin >> relation;
+		r = Schema::GetInstance().GetRelationByNom(relation);
+	}
+
+	PrintLn("");
+	PrintLn("Veuillez entrer le nom de l'attribut de " +r.GetNom() +" à enlever de la projection : ");
+	string attribut;
+	cin >> attribut;
+
+	Attribut a = r.GetAttributByNom(attribut);
+	while(a.GetNom() == "")
+	{
+		PrintLn("");
+		PrintLn("Cet attribut n'existe pas dans la relation " +r.GetNom() +", veuillez entrer le nom d'une attribut : ");
+		cin >> attribut;
+		a = r.GetAttributByNom(attribut);
+	}
+
+	Relation tmpRel = r;
+	tmpRel.GetAttributs().erase(tmpRel.GetAttributs().begin() + a.GetPosition());
+	tmpRel.SetNom(r.GetNom() +"TMP");
+	Schema::GetInstance().addRelationTMP(r);
+
+
 }

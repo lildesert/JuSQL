@@ -26,6 +26,7 @@ public:
 	int NbMaxNuplets();
 	vector<Attribut> GetAttributs();
 	Attribut GetAttributByNom(string nom);
+	void SetNom(string nom);
 
 private:
 	int idRelation;
