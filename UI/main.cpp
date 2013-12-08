@@ -37,6 +37,13 @@ int main(int argc, char** argv) {
 		}
 	}
 
+	vector<int> idIncLoad = loadIdIncrement();
+	if(idIncLoad.size() != 0)
+	{
+		Relation::idIncrementRelation = idIncLoad[0];
+		Attribut::idIncrementAttribut = idIncLoad[1];
+	}
+
 	//Test de la fonction NbMaxNuplet
 	/*Relation r("test");
 	Attribut a1("id", "int", 4);
@@ -91,6 +98,7 @@ int main(int argc, char** argv) {
 					switch(choix3)
 					{
 						case 1: {
+							AjoutNuplet();
 							choix3 = MenuSQL();
 							break;
 						}
@@ -128,6 +136,11 @@ int main(int argc, char** argv) {
 			oa << const_cast<Schema &>(Schema::GetInstance());
 		}
 	}
+
+	vector<int> idIncSave;
+	idIncSave.push_back(Relation::idIncrementRelation);
+	idIncSave.push_back(Attribut::idIncrementAttribut);
+	saveIdIncrement(idIncSave);
    
     return 0;
 }

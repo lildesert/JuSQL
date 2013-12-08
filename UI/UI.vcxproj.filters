@@ -74,10 +74,14 @@
     <ClInclude Include="test.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="page.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="bdd.txt" />
     <Text Include="R_Pages.txt" />
     <Text Include="schema.txt" />
+    <Text Include="idRelAtt.txt" />
   </ItemGroup>
 </Project>

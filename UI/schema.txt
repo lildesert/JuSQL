@@ -1,1 +1,1 @@
-22 serialization::archive 10 0 0 0 6 juTest 0 0 2 0 0 0 1 5 Eleve 0 0 2 0 0 0 1 7 idEleve 1 I 2 2 8 nomEleve 1 S 15 2 6 Classe 1 0 3 8 idClasse 1 I 2
+22 serialization::archive 10 0 0 0 6 juTest 0 0 2 0 0 0 1 5 Eleve 0 0 2 0 0 0 1 7 idEleve 1 I 4 2 8 nomEleve 1 S 15 2 6 Classe 1 0 3 8 idClasse 1 I 4

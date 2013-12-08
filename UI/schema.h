@@ -23,6 +23,7 @@ public:
 	Relation GetRelationById(string id);
 	void DeleteAllRelations();
 	vector<Relation> GetRelations();
+	Relation GetRelationByNom(string nom);
 
 	static Schema& GetInstance()
 	{
