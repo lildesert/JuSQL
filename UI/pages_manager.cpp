@@ -83,6 +83,7 @@ bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
     //Contiendra toutes les adresses des pages allouées pour R
     vector<int> adressesPages(getAdressesPages(IDRelation));
     const int tailleIDBloc(8);
+    int tailleNuplet(Schema::GetInstance().GetRelationById(IDRelation).GetTailleNuplet());
     
     // Chargement des pages en mémoire vive
     vector<Page> pages = chargerPages();
@@ -99,6 +100,9 @@ bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
                     int debutNuplet(tailleIDBloc + nbMaxNUplets + nUplet.size()*v);
                     for(int w(0); w < nUplet.size(); ++w) {
                         pages[u].e[debutNuplet + w] = nUplet[w];
+                    }
+                    for(int a(nUplet.size()); a < tailleNuplet - nUplet.size(); ++a){
+                        pages[u].e[debutNuplet + a] = '0';
                     }
                     // Le bit de présence est passé à 1
                     pages[u].e[tailleIDBloc + v] = '1';
