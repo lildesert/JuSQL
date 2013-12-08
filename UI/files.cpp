@@ -1,6 +1,8 @@
 #include "files.h"
 #include <time.h>
 
+#include "common.h"
+
 using namespace std;
 
 // Entier de type int 4 octets
@@ -59,13 +61,13 @@ int modeF() {
 
 // Retourne le chemin du fichier de bdd
 string fichierBDD() {
-    string f("UI/bdd.txt");
+    string f(PathUnixWin("bdd.txt"));
     return f;
 }
 
 // Retourne le chemin du fichier Relation - Pages
 string fichierRPages() {
-    string f("UI/R_Pages.txt");
+    string f(PathUnixWin("R_Pages.txt"));
     return f;
 }
 
@@ -172,7 +174,7 @@ void sauvegarderPages(vector<Page> pages, bool aLaFin) {
 
 void chargerSchema(vector<string> &tabSchema) {
     cout << "Chargement du schéma ... ";
-    string nomFichier("schema.txt");
+    string nomFichier(PathUnixWin("schema.txt"));
     ifstream fichier(nomFichier.c_str());
     
     int i(0);

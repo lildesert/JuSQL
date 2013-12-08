@@ -69,3 +69,14 @@ vector<int> loadIdIncrement()
 	vector<int> result;
 	return result;
 }
+
+string PathUnixWin(string path)
+{
+	#   ifdef __linux__
+        return "UI/" +path;
+	#   endif
+
+	#   ifdef _WIN32
+		return path;
+	#   endif
+}

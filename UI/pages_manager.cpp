@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "pages_manager.h"
+#include "common.h"
 
 using namespace std;
 
@@ -310,12 +311,12 @@ void AfficherPages() {
     listTypesChamps.push_back("char[5]");
     //================================================
     
-    int tailleF(tailleFichier("UI/bdd.txt")), i(0), j, y(1), oldI(0);
+	int tailleF(tailleFichier(PathUnixWin("bdd.txt"))), i(0), j, y(1), oldI(0);
     string idRelation, zoneGestion, type, champsString, champs;
     int nbChamps(listTypesChamps.size());
     int tailleChamps, champsInt, taillePage(512);
     
-    ifstream fPages("UI/bdd.txt");
+    ifstream fPages(PathUnixWin("bdd.txt"));
     
     if(fPages) {
         while(i < tailleF){
@@ -365,7 +366,7 @@ void AfficherPages() {
             ++y;
         }
     } else {
-        afficherPbmOuverture("UI/bdd.txt");
+        afficherPbmOuverture(PathUnixWin("bdd.txt"));
     }
     cout << endl;
 }

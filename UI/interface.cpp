@@ -24,6 +24,17 @@ int MenuSchema()
 	return MenuCommon("Gestion du schéma de la BDD", menuLn);
 }
 
+// Affichage du menu de la partie SQL
+int MenuSQL() {
+
+	vector<string> menuLn(4);
+	menuLn[0] = "1 - Ajouter un Nuplet";
+	menuLn[1] = "2 - Effacer un Nuplet";
+	menuLn[2] = "3 - Sélectionner un Nuplet";
+	menuLn[3] = "4 - Retour à l'accueil";
+	return MenuCommon("Menu SQL", menuLn);
+}
+
 void CreateSchema()
 {
 	ClearScreen();

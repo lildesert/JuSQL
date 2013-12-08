@@ -20,4 +20,6 @@ void saveIdIncrement(vector<int> idInc);
 
 vector<int> loadIdIncrement();
 
+string PathUnixWin(string path);
+
 #endif	/* COMMON_H */

@@ -16,5 +16,7 @@ void CreateSchema();
 
 void PrintSchema();
 
+int MenuSQL();
+
 #endif	/* INTERFACE_H */
 

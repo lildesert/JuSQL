@@ -22,7 +22,11 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
-	string serialFile = "schema.txt";
+	#   ifdef _WIN32
+        setlocale(LC_ALL,"");
+	#   endif
+
+	string serialFile = PathUnixWin("schema.txt");
 	ifstream deserialization(serialFile.c_str());
 	if(deserialization)
 	{
@@ -80,7 +84,31 @@ int main(int argc, char** argv) {
                 break;
             }
             case 2: {
-                cout << "2" << endl;
+                int choix3 = MenuSQL();
+				bool continuer3 = true;
+				while(continuer3)
+				{
+					switch(choix3)
+					{
+						case 1: {
+							choix3 = MenuSQL();
+							break;
+						}
+						case 2: {
+							choix3 = MenuSQL();
+							break;
+						}
+						case 3: {
+							choix3 = MenuSQL();
+							break;
+						}
+						case 4: {
+							choix = MenuPrincipal();
+							continuer3 = false;
+							break;
+						}
+					}
+				}
                 break;
             }
             case 3: {
