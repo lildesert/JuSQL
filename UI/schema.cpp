@@ -47,3 +47,16 @@ vector<Relation> Schema::GetRelations()
 {
 	return this->listRelation;
 }
+
+Relation Schema::GetRelationByNom(string nom)
+{
+	Relation r;
+	for (auto &rel : this->listRelation)
+	{
+		if(rel.GetNom() == nom)
+		{
+			r = rel;
+		}
+	}
+	return r;
+}

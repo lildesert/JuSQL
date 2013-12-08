@@ -18,7 +18,7 @@ public:
 	~Relation(void);
 	static int idIncrementRelation;
 	void addAttribut(Attribut a);
-	string getNom();
+	string GetNom();
 	int GetTailleNuplet();
 	int GetId();
 	vector<int> GetTaillesAttributs();

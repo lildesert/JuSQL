@@ -1,4 +1,8 @@
 #include "common.h"
+#include "files.h"
+#include <iostream>
+#include <fstream>
+#include <boost/algorithm/string.hpp>
 
 #   ifdef _WIN32
 #	include <windows.h>
@@ -60,13 +64,44 @@ void PortableSleep(int sec) {
 
 void saveIdIncrement(vector<int> idInc)
 {
-	//Save ids in file
+	string serialIdFile = PathUnixWin("idRelAtt.txt");
+	ofstream saveId(serialIdFile.c_str());
+	if(saveId)
+	{
+		//Save ids in file
+		for (auto &id : idInc)
+		{
+			saveId << id;
+			saveId << "|";
+		}
+	}
 }
 
 vector<int> loadIdIncrement()
 {
+	string serialIdFile = PathUnixWin("idRelAtt.txt");
 	//Load ids from file
 	vector<int> result;
+
+	ifstream loadId(serialIdFile.c_str());
+	if(loadId)
+	{
+		if(!IsFileEmpty(loadId))
+		{
+			string chaine;
+			loadId >> chaine;
+			vector<string> tabResult;
+			boost::split(tabResult, chaine, boost::is_any_of("|"));
+			for (auto &s : tabResult)
+			{
+				if(s != "")
+				{
+					result.push_back(atoi(s.c_str()));
+				}
+			}
+		}
+	}
+
 	return result;
 }
 
@@ -80,3 +115,4 @@ string PathUnixWin(string path)
 		return path;
 	#   endif
 }
+

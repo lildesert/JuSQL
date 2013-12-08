@@ -18,5 +18,7 @@ void PrintSchema();
 
 int MenuSQL();
 
+void AjoutNuplet();
+
 #endif	/* INTERFACE_H */
 

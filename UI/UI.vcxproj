@@ -55,6 +55,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\local\boost_1_55_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -98,6 +99,7 @@
     <ClInclude Include="content_manager.h" />
     <ClInclude Include="files.h" />
     <ClInclude Include="interface.h" />
+    <ClInclude Include="page.h" />
     <ClInclude Include="pages_manager.h" />
     <ClInclude Include="Relation.h" />
     <ClInclude Include="Schema.h" />
@@ -105,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="bdd.txt" />
+    <Text Include="idRelAtt.txt" />
     <Text Include="R_Pages.txt" />
     <Text Include="schema.txt" />
   </ItemGroup>

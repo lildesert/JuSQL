@@ -23,7 +23,7 @@ void Relation::addAttribut(Attribut a)
 	(this->listAttribut).push_back(a);
 }
 
-string Relation::getNom()
+string Relation::GetNom()
 {
 	return this->nomRelation;
 }

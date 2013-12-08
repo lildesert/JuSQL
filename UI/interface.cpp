@@ -79,7 +79,7 @@ void CreateSchema()
 
 					Relation r(nomR);
 
-					PrintLn("--------- Définition des attributs de " +r.getNom() +" ---------");
+					PrintLn("--------- Définition des attributs de " +r.GetNom() +" ---------");
 
 					bool addAtt = true;
 					while (addAtt)
@@ -87,7 +87,7 @@ void CreateSchema()
 						string answerA = "";
 						while(answerA != "O" && answerA != "N")
 						{
-							PrintLn("Ajouter un attribut à la relation " +r.getNom() +" ? (O/N)");
+							PrintLn("Ajouter un attribut à la relation " +r.GetNom() +" ? (O/N)");
 							cin >> answerA;
 						}
 
@@ -155,7 +155,7 @@ void PrintSchema()
 		{
 			PrintLn("");
 			PrintLn("-----------------------------------------");
-			PrintLn("--------- Relation : " +r.getNom() +" ---------");
+			PrintLn("--------- Relation : " +r.GetNom() +" ---------");
 			PrintLn("");
 
 			for (auto &a : r.GetAttributs())
@@ -187,4 +187,44 @@ void PrintSchema()
 			cin >> answer;
 		}
 	}
+}
+
+void AjoutNuplet()
+{
+	ClearScreen();
+
+	PrintLn("");
+	PrintLn("");
+	PrintLn("--------- Ajout d'un Nuplet ---------");
+
+	PrintLn("");
+	PrintLn("Veuillez entrer le nom de la relation dans laquelle vous souhaitez ajouter un nuplet : ");
+	string relation;
+	cin >> relation;
+
+	Relation r = Schema::GetInstance().GetRelationByNom(relation);;
+	while(r.GetNom() == "")
+	{
+		PrintLn("");
+		PrintLn("Cette relation n'existe pas dans le schéma " +Schema::GetInstance().getNom() +", veuillez entrer le nom d'une relation : ");
+		cin >> relation;
+		r = Schema::GetInstance().GetRelationByNom(relation);
+	}
+
+	string chaineRetour = "";
+	for (auto &a : r.GetAttributs())
+	{
+		PrintLn("Entrez une valeur pour l'attribut " +a.GetNom() +", type (" +a.GetType() +") : ");
+		string valueA;
+		cin >> valueA;
+
+		if(a.GetType() == "I")
+		{
+			int nb = atoi(valueA.c_str());
+			const int taille = a.GetTaille();
+			chaineRetour += bitset< 32 >( nb ).to_string();
+		}
+
+	}
+
 }
