@@ -107,7 +107,7 @@ int main(int argc, char** argv) {
 							break;
 						}
 						case 5: {
-							//Fct à ajouter
+							ProjectionWithoutOneAtt();
 							choix3 = MenuRequete();
 							break;
 						}

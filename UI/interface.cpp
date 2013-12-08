@@ -27,7 +27,7 @@ int MenuSchema()
 // Affichage du menu de la partie SQL
 int MenuRequete() {
 
-	vector<string> menuLn(5);
+	vector<string> menuLn(6);
 	menuLn[0] = "1 - Ajouter un Nuplet";
 	menuLn[1] = "2 - Effacer un Nuplet";
 	menuLn[2] = "3 - Afficher les Nuplets d'une relation";
@@ -244,6 +244,16 @@ void AjoutNuplet()
 		else
 		{
 			chaineRetour += asciiToBin(valueA);
+			int taille = asciiToBin(valueA).size();
+			int tailleChamp = a.GetTaille() * 8;
+			if(taille != tailleChamp)
+			{
+				int manquant = tailleChamp - taille;
+				for(int i = 0 ; i < manquant ; i++)
+				{
+					chaineRetour += "0";
+				}
+			}
 		}
 	}
 
@@ -444,5 +454,5 @@ void ProjectionWithoutOneAtt()
 	tmpRel.SetNom(r.GetNom() +"TMP");
 	Schema::GetInstance().addRelationTMP(r);
 
-
+	Retour();
 }
