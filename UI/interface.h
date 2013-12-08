@@ -12,6 +12,8 @@ int MenuPrincipal();
 
 int MenuSchema();
 
+void InterfaceCreateSchema();
+
 void CreateSchema();
 
 void PrintSchema();
