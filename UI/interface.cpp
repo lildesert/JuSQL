@@ -24,7 +24,7 @@ int MenuSchema()
 	return MenuCommon("Gestion du schéma de la BDD", menuLn);
 }
 
-// Affichage du menu de la partie SQL
+// Affichage du menu de la partie Requête
 int MenuRequete() {
 
 	vector<string> menuLn(6);
