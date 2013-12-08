@@ -31,6 +31,8 @@ void tester() {
     afficherPage("00000001");
     cout << "Taille du fichier Bdd : " << tailleFichier(fichierBDD()) << endl;
     cout << "Taille du fichier R_Pages : " << tailleFichier(fichierRPages()) << endl << endl;
+    AfficherPages(IDRelation1);
+    cout << endl << endl;
     
     
     cout << "Création d'un deuxième enregistrement pour R1." << endl;

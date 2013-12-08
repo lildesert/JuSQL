@@ -2,6 +2,8 @@
 
 #include "pages_manager.h"
 #include "common.h"
+#include "Relation.h"
+#include "schema.h"
 
 using namespace std;
 
@@ -217,14 +219,13 @@ int deleteNupletByChamp(string IDRelation, int numChamp, string ref) {
     vector<int> adressesPages(getAdressesPages(IDRelation));
     int i, j, k;
     const int tailleIDBloc(8);
-    // Normalement fonction à implémenter
-    int tailleEnregistrement(232);
-    int nbMaxNuplet(2);
-    vector<int> taillesChamps;
-    taillesChamps.push_back(32);
-    taillesChamps.push_back(200);
-    bool pageVide(true);
+
+    // Initialisations des variables en fonction de la relation concernée
+    int tailleEnregistrement(Schema::GetInstance().GetRelationById(IDRelation).GetTailleNuplet());
+    int nbMaxNuplet(Schema::GetInstance().GetRelationById(IDRelation).NbMaxNuplets());
+    vector<int> taillesChamps(Schema::GetInstance().GetRelationById(IDRelation).GetTaillesAttributs());
     
+    bool pageVide(true);
     if(numChamp <= taillesChamps.size()){
         return 0;
     }
@@ -292,103 +293,55 @@ void afficherPage(string IDPage) {
     }
 }
 
-void AfficherPages() {
+void AfficherPages(string IDRelation) {
     cout << endl << "====== Affichage des pages ======" << endl;
+    cout << "Relation : " << IDRelation << endl;
     
-    //======= ATTENTE DE LA FONCTION DE JULIEN =======
-    int nbMaxNUplets(5);
-    //================================================
+    int tailleIDBloc(8);
+    int nbMaxNUplets(Schema::GetInstance().GetRelationById(IDRelation).NbMaxNuplets());
+    vector<int> listTaillesChamps(Schema::GetInstance().GetRelationById(IDRelation).GetTaillesAttributs());
+    vector<string> listTypesChamps(Schema::GetInstance().GetRelationById(IDRelation).GetTypesAttributs());
+    int tailleNuplet(Schema::GetInstance().GetRelationById(IDRelation).GetTailleNuplet());
     
-    //======= ATTENTE DE LA FONCTION DE JULIEN =======
-    list <int> listTaillesChamps;
-    listTaillesChamps.push_back(8); // 1 entier
-    listTaillesChamps.push_back(40); // 5 caractères
-    //================================================
+    vector<Page> pages(chargerPages());
+    vector<int> adressesPages(getAdressesPages(IDRelation));
     
-    //======= ATTENTE DE LA FONCTION DE JULIEN =======
-    list <string> listTypesChamps;
-    listTypesChamps.push_back("id");
-    listTypesChamps.push_back("char[5]");
-    //================================================
+    string champ("");
+    int i, j, k, l;
+    int nbChamps(listTaillesChamps.size());
+    int departNuplet, departChamp;
     
-	int tailleF(tailleFichier(PathUnixWin("bdd.txt"))), i(0), j, y(1), oldI(0);
-    string idRelation, zoneGestion, type, champsString, champs;
-    int nbChamps(listTypesChamps.size());
-    int tailleChamps, champsInt, taillePage(512);
-    
-    ifstream fPages(PathUnixWin("bdd.txt"));
-    
-    if(fPages) {
-        while(i < tailleF){
-            // Réinitialisations 
-            idRelation = "";
-            zoneGestion = "";
-            oldI = i;
-            cout << y << ". " << "Bloc :" << endl;
-            for(j = 0; j< 8; ++j){
-                idRelation += fPages.get();
-            }
-            i += 8;
-            cout << "\tIDRelation : " << idRelation << endl;
-            
-            // ========== Attente fonction ======
-            // Prendre les taillesChamps et types champs pour l'ID de relation
-            // ============================
-            
-            for(j = 0; j< nbMaxNUplets; ++j){
-                zoneGestion += fPages.get();
-                ++i;
-            }
-            i += nbMaxNUplets;
-            cout << "\tZone de gestion : " << zoneGestion << endl;
-            for(j = 0; j< nbMaxNUplets; ++j){
-                zoneGestion += fPages.get();
-            }
-            i += nbMaxNUplets;
-            list<int>::iterator itTailleChamps= listTaillesChamps.begin();
-            for(list<string>::iterator it= listTypesChamps.begin(); it!= listTypesChamps.end(); ++it) {
-                type = *it;
-                tailleChamps = *itTailleChamps;
-                ++itTailleChamps;
-                for(j = 0; j< tailleChamps; ++j){
-                    champs += fPages.get();
-                }
-                i += tailleChamps;
-                if(type == "id"){
-                    champsInt = bitset< 8 >(champs).to_ulong();
-                } else if (type == "char"){
-                    
-                } else {
-                    cout << "Aucun type ne correspond. Impossible d'afficher les pages de la base." << endl;
+    // Pour toutes les adresses de pages
+    for(i= 0; i< adressesPages.size(); ++i) {
+        cout << "Page " << i + 1 << " : " << endl;
+        // Pour tous les enregistrements de la page i
+        for(j= 0; j< nbMaxNUplets; ++j){
+            departChamp = 0;
+            if(pages[i].e[tailleIDBloc + j] == '1'){
+                cout << "\tEnregistrement " << j + 1 << " : " << endl;
+                // Pour tous les champs de l'enregistrement j
+                for(k= 0; k< nbChamps; ++k){
+                    champ.clear(); 
+                    departNuplet = tailleIDBloc + nbMaxNUplets + j*tailleNuplet;
+                    // Pour tous les bits du champ k
+                    for(l= 0; l< listTaillesChamps[k]*8; ++l){
+                        champ += pages[i].e[departNuplet + departChamp + l];
+                    }
+                    departChamp += listTaillesChamps[k]*8;
+                    // Affichage du champ en focntion de son type
+                    if(listTypesChamps[k].compare("I") == 0){
+                        if(champ.size() == 8) {
+                            cout << "\t\tChamps " << k + 1 << " : " << bin8ToInt(champ) << endl;
+                        } else if (champ.size() == 4){
+                            cout << "\t\tChamps " << k + 1 << " : " << binToInt(champ) << endl;
+                        } else {
+                            cout << "\t\tChamps " << k + 1 << " : " << champ << endl;
+                        }
+                    } else {
+                        cout << "\t\tChamps " << k + 1 << " : " << binToAscii(champ) << endl;
+                    }                   
                 }
             }
-            i += taillePage - (i - oldI);
-            ++y;
         }
-    } else {
-        afficherPbmOuverture(PathUnixWin("bdd.txt"));
     }
-    cout << endl;
-}
-
-/*void AfficherSchemaLisiblement(vector<string> &tabSchema) {
-    cout << endl << "====== Affichage lisible du schéma ======" << endl;
-    string IDRelation, nomChamp, typeChamp, table;
-    for(int i(0); i< tabSchema.size(); ++i) {
-        table = tabSchema[i]; 
-        while(){
-            IDRelation = getTableIDRelation(table);
-            nomChamp = getTableNom(table)  
-        }
-        cout << i << ". IDRelation : " << tabSchema[i] << endl;
-    }
-    cout << endl;
-}*/
-
-string getBlocIDRelation(string bloc){
-    return bloc.substr(0, 1).c_str();
-}
-
-string getBlocContent(string bloc){
-    return bloc.substr(1).c_str();
 }

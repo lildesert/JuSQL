@@ -11,6 +11,8 @@
 
 using namespace std;
 
+int binNToInt(string bin);
+
 string intToBin(int entier);
 
 int binToInt(string bin);
