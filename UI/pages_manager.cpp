@@ -230,13 +230,13 @@ int deleteNupletByChamp(string IDRelation, int numChamp, string ref) {
     vector<int> taillesChamps(Schema::GetInstance().GetRelationById(IDRelation).GetTaillesAttributs());
     
     bool pageVide(true);
-    if(numChamp <= taillesChamps.size()){
+    if(numChamp >= taillesChamps.size()){
         return 0;
     }
     // Déplacement pour aller au champ concerné
     int deplacementChamp(0);
-    for(i= 0; i< numChamp; ++i){
-        deplacementChamp +=  taillesChamps[i]; 
+    for(i= 1; i< numChamp; ++i){
+        deplacementChamp +=  taillesChamps[i] * 8; 
     }
     int deplacement = tailleIDBloc + nbMaxNuplet + deplacementChamp;
     cout << "test" << endl;
@@ -245,8 +245,8 @@ int deleteNupletByChamp(string IDRelation, int numChamp, string ref) {
         for(j= 0; j< nbMaxNuplet; ++j){
             champTMP.clear();
             if(pages[i].e[tailleIDBloc + j] == '1') {
-                for(k= 0; k< taillesChamps[i + 1]; ++k){
-                    champTMP += pages[i].e[deplacement + j * tailleEnregistrement + k];
+				for(k= 0; k< taillesChamps[numChamp -1] * 8; ++k){
+                    champTMP += pages[i].e[deplacement + j * tailleEnregistrement * 8 + k];
                 }
                 if(ref.compare(champTMP) == 0) {
                     //Suppression de l'enregistrement
