@@ -18,11 +18,17 @@ void CreateSchema();
 
 void PrintSchema();
 
-int MenuSQL();
+int MenuRequete();
 
 void AjoutNuplet();
 
 void EffacerNuplet();
+
+void AfficherPagesByRelation();
+
+void Retour();
+
+void SelectWithPredicat();
 
 #endif	/* INTERFACE_H */
 

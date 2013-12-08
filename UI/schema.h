@@ -15,6 +15,7 @@ class Schema
 {
 public:
 	void addRelation(Relation r);
+	void addRelationTMP(Relation r);
 	static int idIncrementSchema;
 	void setNom(string nom);
 	void setId(int id);
@@ -23,6 +24,7 @@ public:
 	Relation GetRelationById(string id);
 	void DeleteAllRelations();
 	vector<Relation> GetRelations();
+	vector<Relation> GetRelationsTMP();
 	Relation GetRelationByNom(string nom);
 
 	static Schema& GetInstance()
@@ -38,6 +40,7 @@ private:
 	int idSchema;
 	string nomSchema;
 	vector<Relation> listRelation;
+	vector<Relation> listRelationTMP;
 
 	friend class boost::serialization::access;
         
