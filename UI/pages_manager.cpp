@@ -83,7 +83,7 @@ bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
     //Contiendra toutes les adresses des pages allouées pour R
     vector<int> adressesPages(getAdressesPages(IDRelation));
     const int tailleIDBloc(8);
-    int tailleNuplet(Schema::GetInstance().GetRelationById(IDRelation).GetTailleNuplet());
+    int tailleNuplet(Schema::GetInstance().GetRelationById(IDRelation).GetTailleNuplet() * 8);
     
     // Chargement des pages en mémoire vive
     vector<Page> pages = chargerPages();
@@ -101,9 +101,9 @@ bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
                     for(int w(0); w < nUplet.size(); ++w) {
                         pages[u].e[debutNuplet + w] = nUplet[w];
                     }
-                    /*for(int a(nUplet.size()); a < tailleNuplet - nUplet.size(); ++a){
+                    for(int a(nUplet.size()); a < (tailleNuplet - nUplet.size() +1); ++a){
                         pages[u].e[debutNuplet + a] = '0';
-                    }*/
+                    }
                     // Le bit de présence est passé à 1
                     pages[u].e[tailleIDBloc + v] = '1';
                     sauvegarderPages(pages, false);
@@ -215,6 +215,72 @@ void supprimerAdressage(int position) {
     } else {
         afficherPbmOuverture(fichierRPages());
     }    
+}
+
+// Recherche les nuplets de R dont le champ n est égal à ref
+int selectByChamp(string IDRelation, int numChamp, string ref) {
+    vector<Page> pages(chargerPages());
+    vector<int> adressesPages(getAdressesPages(IDRelation));
+    int i, j, k;
+    const int tailleIDBloc(8);
+
+    // Initialisations des variables en fonction de la relation concernée
+    int tailleEnregistrement(Schema::GetInstance().GetRelationById(IDRelation).GetTailleNuplet());
+    int nbMaxNuplet(Schema::GetInstance().GetRelationById(IDRelation).NbMaxNuplets());
+    vector<int> taillesChamps(Schema::GetInstance().GetRelationById(IDRelation).GetTaillesAttributs());
+    vector<string> listTypesChamps(Schema::GetInstance().GetRelationById(IDRelation).GetTypesAttributs());
+    int nbChamps(taillesChamps.size());
+    
+    if(numChamp >= taillesChamps.size()){
+        return 0;
+    }
+    // Déplacement pour aller au champ concerné
+    int deplacementChamp(0);
+    for(i= 1; i< numChamp; ++i){
+        deplacementChamp +=  taillesChamps[i] * 8; 
+    }
+    int deplacement = tailleIDBloc + nbMaxNuplet + deplacementChamp;
+    int departNuplet, departChamp, l;
+    string champ("");
+    cout << "test" << endl;
+    string champTMP("");
+    for(i= 0; i< adressesPages.size(); ++i) {
+        for(j= 0; j< nbMaxNuplet; ++j){
+            departChamp = 0;
+            champTMP.clear();
+            if(pages[i].e[tailleIDBloc + j] == '1') {
+                for(k= 0; k< taillesChamps[numChamp -1] * 8; ++k){
+                    champTMP += pages[i].e[deplacement + j * tailleEnregistrement * 8 + k];
+                }
+                if(ref.compare(champTMP) == 0) {
+                    for(int a(0); a< tailleEnregistrement * 8; ++a) {
+                        for(k= 0; k< nbChamps; ++k){
+                            champ.clear(); 
+                            departNuplet = tailleIDBloc + nbMaxNuplet + j*tailleEnregistrement*8;
+                            // Pour tous les bits du champ k
+                            for(l= 0; l< taillesChamps[k]*8; ++l){
+                                champ += pages[i].e[departNuplet + departChamp + l];
+                            }
+                            departChamp += taillesChamps[k]*8;
+                            // Affichage du champ en fonction de son type
+                            if(listTypesChamps[k].compare("I") == 0){
+                                if(champ.size() == 64) {
+                                    cout << "\t\tChamps " << k + 1 << " : " << bin8ToInt(champ);
+                                } else if (champ.size() == 32){
+                                    cout << "\t\tChamps " << k + 1 << " : " << binToInt(champ);
+                                } else {
+                                    cout << "\t\tChamps " << k + 1 << " : " << champ;
+                                }
+                            } else {
+                                cout << "\t\tChamps " << k + 1 << " : " << binToAscii(champ);
+                            }                   
+                        }
+                    }
+                    cout << endl;
+                }
+            }
+        }
+    }
 }
 
 // Retourne la liste des identifiants des pages concernées
@@ -332,7 +398,7 @@ void AfficherPages(string IDRelation) {
                         champ += pages[i].e[departNuplet + departChamp + l];
                     }
                     departChamp += listTaillesChamps[k]*8;
-                    // Affichage du champ en focntion de son type
+                    // Affichage du champ en fonction de son type
                     if(listTypesChamps[k].compare("I") == 0){
                         if(champ.size() == 64) {
                             cout << "\t\tChamps " << k + 1 << " : " << bin8ToInt(champ) << endl;
