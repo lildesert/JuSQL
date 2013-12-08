@@ -19,7 +19,7 @@ int MenuSchema()
 {
 	vector<string> menuLn(3);
 	menuLn[0] = "1 - Créer un nouveau schéma";
-	menuLn[1] = "2 - Modifier le schéma existant";
+	menuLn[1] = "2 - Afficher le schéma";
 	menuLn[2] = "3 - Retour à l'accueil";
 	return MenuCommon("Gestion du schéma de la BDD", menuLn);
 }
@@ -45,6 +45,7 @@ void CreateSchema()
 			string nomS;
 			cin >> nomS;
 			Schema::GetInstance().setNom(nomS);
+			Schema::GetInstance().DeleteAllRelations();
 
 			PrintLn("");
 			PrintLn("--------- Ajout de relations ---------");
@@ -119,6 +120,60 @@ void CreateSchema()
 		else if(reponse == "N")
 		{
 			PrintLn("Retour au menu de gestion du schéma...");
+		}
+	}
+}
+
+void PrintSchema()
+{
+	ClearScreen();
+	if(Schema::GetInstance().getNom() == "")
+	{
+		PrintLn("Aucun schéma n'a été défini, retour au menu...");
+		PortableSleep(2);
+	}
+	else
+	{
+		PrintLn("");
+		PrintLn("");
+		PrintLn("");
+		PrintLn("--------- Schéma : " +Schema::GetInstance().getNom() +" ---------");
+		PrintLn("");
+
+		for (auto &r : Schema::GetInstance().GetRelations())
+		{
+			PrintLn("");
+			PrintLn("-----------------------------------------");
+			PrintLn("--------- Relation : " +r.getNom() +" ---------");
+			PrintLn("");
+
+			for (auto &a : r.GetAttributs())
+			{
+				PrintLn("");
+				PrintLn("--------- Attribut : " +a.GetNom() +" ---------");
+				string type = "";
+				if(a.GetType() == "S")
+				{
+					type = "string";
+				}
+				else if(a.GetType() == "I")
+				{
+					type = "int";
+				}
+				PrintLn("--------- Type : " +type +" ---------");
+				PrintLn("--------- Taille : " +to_string(a.GetTaille()) +" octet(s) ---------");
+				PrintLn("");
+			}
+
+			PrintLn("-----------------------------------------");
+		}
+
+		PrintLn("");
+		string answer = "";
+		while(answer != "O")
+		{
+			PrintLn("Entrez 'O' pour revenir au menu précédent");
+			cin >> answer;
 		}
 	}
 }

@@ -75,3 +75,8 @@ int Relation::NbMaxNuplets()
 	}
 	return nbEnregistrement;
 }
+
+vector<Attribut> Relation::GetAttributs()
+{
+	return this->listAttribut;
+}

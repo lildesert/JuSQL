@@ -24,6 +24,7 @@ public:
 	vector<int> GetTaillesAttributs();
 	vector<string> GetTypesAttributs();
 	int NbMaxNuplets();
+	vector<Attribut> GetAttributs();
 
 private:
 	int idRelation;

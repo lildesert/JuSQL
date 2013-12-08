@@ -21,6 +21,8 @@ public:
 	int getId();
 	string getNom();
 	Relation GetRelationById(string id);
+	void DeleteAllRelations();
+	vector<Relation> GetRelations();
 
 	static Schema& GetInstance()
 	{

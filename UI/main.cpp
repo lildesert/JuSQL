@@ -66,7 +66,8 @@ int main(int argc, char** argv) {
 							break;
 						}
 						case 2: {
-							cout << "2" << endl;
+							PrintSchema();
+							choix2 = MenuSchema();
 							break;
 						}
 						case 3: {

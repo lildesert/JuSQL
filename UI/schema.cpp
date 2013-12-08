@@ -37,3 +37,13 @@ Relation Schema::GetRelationById(string id)
 	}
 	return r;
 }
+
+void Schema::DeleteAllRelations()
+{
+	this->listRelation.clear();
+}
+
+vector<Relation> Schema::GetRelations()
+{
+	return this->listRelation;
+}

@@ -14,5 +14,7 @@ int MenuSchema();
 
 void CreateSchema();
 
+void PrintSchema();
+
 #endif	/* INTERFACE_H */
 

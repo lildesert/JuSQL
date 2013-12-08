@@ -18,6 +18,7 @@ public:
 	static int idIncrementAttribut;
 	int GetTaille();
 	string GetType();
+	string GetNom();
 
 private:
 	int idAttribut;

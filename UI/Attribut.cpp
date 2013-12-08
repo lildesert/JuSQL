@@ -30,3 +30,8 @@ string Attribut::GetType()
 {
 	return this->typeAttribut;
 }
+
+string Attribut::GetNom()
+{
+	return this->nomAttribut;
+}
