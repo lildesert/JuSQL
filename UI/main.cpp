@@ -34,14 +34,14 @@ int main(int argc, char** argv) {
 	}
 
 	//Test de la fonction NbMaxNuplet
-	Relation r("test");
+	/*Relation r("test");
 	Attribut a1("id", "int", 4);
 	Attribut a2("lib", "string", 4);
 	r.addAttribut(a1);
 	r.addAttribut(a2);
 	Schema::GetInstance().addRelation(r);
 
-	int test = Schema::GetInstance().GetRelationById("00000001").NbMaxNuplets();
+	int test = Schema::GetInstance().GetRelationById("00000001").NbMaxNuplets();*/
     
 
     tester();
