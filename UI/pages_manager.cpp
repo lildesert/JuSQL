@@ -305,7 +305,7 @@ void AfficherPages(string IDRelation) {
     int nbMaxNUplets(Schema::GetInstance().GetRelationById(IDRelation).NbMaxNuplets());
     vector<int> listTaillesChamps(Schema::GetInstance().GetRelationById(IDRelation).GetTaillesAttributs());
     vector<string> listTypesChamps(Schema::GetInstance().GetRelationById(IDRelation).GetTypesAttributs());
-    int tailleNuplet(Schema::GetInstance().GetRelationById(IDRelation).GetTailleNuplet());
+    int tailleNuplet(Schema::GetInstance().GetRelationById(IDRelation).GetTailleNuplet() * 8);
     
     vector<Page> pages(chargerPages());
     vector<int> adressesPages(getAdressesPages(IDRelation));
@@ -314,7 +314,7 @@ void AfficherPages(string IDRelation) {
     int i, j, k, l;
     int nbChamps(listTaillesChamps.size());
     int departNuplet, departChamp;
-    
+        
     // Pour toutes les adresses de pages
     for(i= 0; i< adressesPages.size(); ++i) {
         cout << "Page " << i + 1 << " : " << endl;
