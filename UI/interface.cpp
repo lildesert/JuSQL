@@ -244,6 +244,16 @@ void AjoutNuplet()
 		else
 		{
 			chaineRetour += asciiToBin(valueA);
+			int taille = asciiToBin(valueA).size();
+			int tailleChamp = a.GetTaille() * 8;
+			if(taille != tailleChamp)
+			{
+				int manquant = tailleChamp - taille;
+				for(int i = 0 ; i < manquant ; i++)
+				{
+					chaineRetour += "0";
+				}
+			}
 		}
 	}
 
@@ -444,5 +454,5 @@ void ProjectionWithoutOneAtt()
 	tmpRel.SetNom(r.GetNom() +"TMP");
 	Schema::GetInstance().addRelationTMP(r);
 
-
+	Retour();
 }
