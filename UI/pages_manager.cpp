@@ -242,7 +242,6 @@ int selectByChamp(string IDRelation, int numChamp, string ref) {
     int deplacement = tailleIDBloc + nbMaxNuplet + deplacementChamp;
     int departNuplet, departChamp, l;
     string champ("");
-    cout << "test" << endl;
     string champTMP("");
     for(i= 0; i< adressesPages.size(); ++i) {
         for(j= 0; j< nbMaxNuplet; ++j){
@@ -252,6 +251,7 @@ int selectByChamp(string IDRelation, int numChamp, string ref) {
                 for(k= 0; k< taillesChamps[numChamp -1] * 8; ++k){
                     champTMP += pages[i].e[deplacement + j * tailleEnregistrement * 8 + k];
                 }
+                cout << "test" << endl;
                 if(ref.compare(champTMP) == 0) {
                     for(int a(0); a< tailleEnregistrement * 8; ++a) {
                         for(k= 0; k< nbChamps; ++k){
