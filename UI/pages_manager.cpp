@@ -228,13 +228,13 @@ int selectByChamp(string IDRelation, int numChamp, string ref) {
     vector<string> listTypesChamps(Schema::GetInstance().GetRelationById(IDRelation).GetTypesAttributs());
     int nbChamps(taillesChamps.size());
     
-    if(numChamp >= taillesChamps.size()){
+    if(numChamp > taillesChamps.size()){
         return 0;
     }
     // Déplacement pour aller au champ concerné
     int deplacementChamp(0);
     for(i= 1; i< numChamp; ++i){
-        deplacementChamp +=  taillesChamps[i] * 8; 
+        deplacementChamp +=  taillesChamps[i - 1] * 8; 
     }
     int deplacement = tailleIDBloc + nbMaxNuplet + deplacementChamp;
     int departNuplet, departChamp, l;
