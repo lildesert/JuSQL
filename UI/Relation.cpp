@@ -67,8 +67,10 @@ vector<string> Relation::GetTypesAttributs()
 int Relation::NbMaxNuplets()
 {
 	int tailleNuplet = this->GetTailleNuplet();
-	int nbEnregistrement = 62 / tailleNuplet;
-	int reste = 62 % tailleNuplet;
+
+	//On divise 63 octets par la taille d'un nuplet car on enlève l'octet qui représente l'ID de la page
+	int nbEnregistrement = 63 / tailleNuplet;
+	int reste = 63 % tailleNuplet;
 	while(nbEnregistrement > (reste * 8))
 	{
 		nbEnregistrement--;

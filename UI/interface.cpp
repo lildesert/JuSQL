@@ -316,6 +316,16 @@ void EffacerNuplet()
 	else
 	{
 		chaineRetour += asciiToBin(valueA);
+		int taille = asciiToBin(valueA).size();
+		int tailleChamp = a.GetTaille() * 8;
+		if(taille != tailleChamp)
+		{
+			int manquant = tailleChamp - taille;
+			for(int i = 0 ; i < manquant ; i++)
+			{
+				chaineRetour += "0";
+			}
+		}
 	}
 
 	deleteNupletByChamp(intToBin8(r.GetId()), a.GetPosition(), chaineRetour);
@@ -406,6 +416,16 @@ void SelectWithPredicat()
 	else
 	{
 		chaineRetour += asciiToBin(valueA);
+		int taille = asciiToBin(valueA).size();
+		int tailleChamp = a.GetTaille() * 8;
+		if(taille != tailleChamp)
+		{
+			int manquant = tailleChamp - taille;
+			for(int i = 0 ; i < manquant ; i++)
+			{
+				chaineRetour += "0";
+			}
+		}
 	}
 
 	selectByChamp(intToBin8(r.GetId()), a.GetPosition(), chaineRetour);
