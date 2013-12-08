@@ -22,8 +22,8 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
-	viderFichier(fichierBDD());
-	viderFichier(fichierRPages());
+	/*viderFichier(fichierBDD());
+	viderFichier(fichierRPages());*/
 
 	#   ifdef _WIN32
         setlocale(LC_ALL,"");
@@ -46,19 +46,6 @@ int main(int argc, char** argv) {
 		Relation::idIncrementRelation = idIncLoad[0];
 		Attribut::idIncrementAttribut = idIncLoad[1];
 	}
-
-	//Test de la fonction NbMaxNuplet
-	/*Relation r("test");
-	Attribut a1("id", "int", 4);
-	Attribut a2("lib", "string", 4);
-	r.addAttribut(a1);
-	r.addAttribut(a2);
-	Schema::GetInstance().addRelation(r);
-
-	int test = Schema::GetInstance().GetRelationById("00000001").NbMaxNuplets();*/
-    
-
-    //tester();
     
     // Lancement du menu principal de l'application
     bool continuer = true;
@@ -110,10 +97,15 @@ int main(int argc, char** argv) {
 							break;
 						}
 						case 3: {
+							AfficherPagesByRelation();
 							choix3 = MenuSQL();
 							break;
 						}
 						case 4: {
+							choix3 = MenuSQL();
+							break;
+						}
+						case 5: {
 							choix = MenuPrincipal();
 							continuer3 = false;
 							break;

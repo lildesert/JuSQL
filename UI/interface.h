@@ -24,5 +24,9 @@ void AjoutNuplet();
 
 void EffacerNuplet();
 
+void AfficherPagesByRelation();
+
+void Retour();
+
 #endif	/* INTERFACE_H */
 

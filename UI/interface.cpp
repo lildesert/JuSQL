@@ -27,11 +27,12 @@ int MenuSchema()
 // Affichage du menu de la partie SQL
 int MenuSQL() {
 
-	vector<string> menuLn(4);
+	vector<string> menuLn(5);
 	menuLn[0] = "1 - Ajouter un Nuplet";
 	menuLn[1] = "2 - Effacer un Nuplet";
-	menuLn[2] = "3 - Sélectionner un Nuplet";
-	menuLn[3] = "4 - Retour à l'accueil";
+	menuLn[2] = "3 - Afficher les Nuplets d'une relation";
+	menuLn[3] = "4 - Sélection de Nuplet avec prédicat";
+	menuLn[4] = "5 - Retour à l'accueil";
 	return MenuCommon("Menu SQL", menuLn);
 }
 
@@ -190,13 +191,18 @@ void PrintSchema()
 			PrintLn("-----------------------------------------");
 		}
 
-		PrintLn("");
-		string answer = "";
-		while(answer != "O")
-		{
-			PrintLn("Entrez 'O' pour revenir au menu précédent");
-			cin >> answer;
-		}
+		Retour();
+	}
+}
+
+void Retour()
+{
+	PrintLn("");
+	string answer = "";
+	while(answer != "O")
+	{
+		PrintLn("Entrez 'O' pour revenir au menu précédent");
+		cin >> answer;
 	}
 }
 
@@ -245,8 +251,7 @@ void AjoutNuplet()
 	PrintLn("");
 	PrintLn("Nuplet ajouté !");
 
-	AfficherPages(intToBin8(r.GetId()));
-	PortableSleep(7);
+	Retour();
 }
 
 void EffacerNuplet()
@@ -307,7 +312,93 @@ void EffacerNuplet()
 	PrintLn("");
 	PrintLn("Nuplet(s) supprimé(s) !");
 
-	AfficherPages(intToBin8(r.GetId()));
-	PortableSleep(10);
+	Retour();
 
+}
+
+void AfficherPagesByRelation()
+{
+	ClearScreen();
+
+	PrintLn("");
+	PrintLn("");
+	PrintLn("--------- Affichage des nuplets d'une Relation ---------");
+
+	PrintLn("");
+	PrintLn("Veuillez entrer le nom de la relation dont vous voulez afficher les nuplets : ");
+	string relation;
+	cin >> relation;
+
+	Relation r = Schema::GetInstance().GetRelationByNom(relation);
+	while(r.GetNom() == "")
+	{
+		PrintLn("");
+		PrintLn("Cette relation n'existe pas dans le schéma " +Schema::GetInstance().getNom() +", veuillez entrer le nom d'une relation : ");
+		cin >> relation;
+		r = Schema::GetInstance().GetRelationByNom(relation);
+	}
+
+	PrintLn("");
+	AfficherPages(intToBin8(r.GetId()));
+
+	Retour();
+}
+
+void SelectWithPredicat()
+{
+	ClearScreen();
+
+	PrintLn("");
+	PrintLn("");
+	PrintLn("--------- Sélection de Nuplet avec prédicat ---------");
+
+	PrintLn("");
+	PrintLn("Veuillez entrer le nom de la relation dans laquelle vous souhaitez sélectionner un/des nuplet(s) : ");
+	string relation;
+	cin >> relation;
+
+	Relation r = Schema::GetInstance().GetRelationByNom(relation);
+	while(r.GetNom() == "")
+	{
+		PrintLn("");
+		PrintLn("Cette relation n'existe pas dans le schéma " +Schema::GetInstance().getNom() +", veuillez entrer le nom d'une relation : ");
+		cin >> relation;
+		r = Schema::GetInstance().GetRelationByNom(relation);
+	}
+
+
+	PrintLn("");
+	PrintLn("Veuillez entrer le nom de l'attribut de " +r.GetNom() +" sur lequel portera la condition de sélection : ");
+	string attribut;
+	cin >> attribut;
+
+	Attribut a = r.GetAttributByNom(attribut);
+	while(a.GetNom() == "")
+	{
+		PrintLn("");
+		PrintLn("Cet attribut n'existe pas dans la relation " +r.GetNom() +", veuillez entrer le nom d'une attribut : ");
+		cin >> attribut;
+		a = r.GetAttributByNom(attribut);
+	}
+
+	string chaineRetour = "";
+
+	PrintLn("Entrez la valeur pour l'attribut " +a.GetNom() +", type (" +a.GetType() +") : ");
+	string valueA;
+	cin >> valueA;
+
+	if(a.GetType() == "I")
+	{
+		int nb = atoi(valueA.c_str());
+		chaineRetour += intToBin(nb);
+	}
+	else
+	{
+		chaineRetour += asciiToBin(valueA);
+	}
+
+
+	selectByChamp(intToBin8(r.GetId()), a.GetPosition(), chaineRetour);
+
+	Retour();
 }
