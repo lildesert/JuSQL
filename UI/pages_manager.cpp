@@ -101,9 +101,9 @@ bool creerEnregistrement(string IDRelation, int nbMaxNUplets, string nUplet) {
                     for(int w(0); w < nUplet.size(); ++w) {
                         pages[u].e[debutNuplet + w] = nUplet[w];
                     }
-                    for(int a(nUplet.size()); a < tailleNuplet - nUplet.size(); ++a){
+                    /*for(int a(nUplet.size()); a < tailleNuplet - nUplet.size(); ++a){
                         pages[u].e[debutNuplet + a] = '0';
-                    }
+                    }*/
                     // Le bit de présence est passé à 1
                     pages[u].e[tailleIDBloc + v] = '1';
                     sauvegarderPages(pages, false);
@@ -334,9 +334,9 @@ void AfficherPages(string IDRelation) {
                     departChamp += listTaillesChamps[k]*8;
                     // Affichage du champ en focntion de son type
                     if(listTypesChamps[k].compare("I") == 0){
-                        if(champ.size() == 8) {
+                        if(champ.size() == 64) {
                             cout << "\t\tChamps " << k + 1 << " : " << bin8ToInt(champ) << endl;
-                        } else if (champ.size() == 4){
+                        } else if (champ.size() == 32){
                             cout << "\t\tChamps " << k + 1 << " : " << binToInt(champ) << endl;
                         } else {
                             cout << "\t\tChamps " << k + 1 << " : " << champ << endl;

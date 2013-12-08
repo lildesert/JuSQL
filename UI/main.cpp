@@ -22,6 +22,9 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
+	viderFichier(fichierBDD());
+	viderFichier(fichierRPages());
+
 	#   ifdef _WIN32
         setlocale(LC_ALL,"");
 	#   endif
@@ -55,7 +58,7 @@ int main(int argc, char** argv) {
 	int test = Schema::GetInstance().GetRelationById("00000001").NbMaxNuplets();*/
     
 
-    tester();
+    //tester();
     
     // Lancement du menu principal de l'application
     bool continuer = true;

@@ -237,5 +237,7 @@ void AjoutNuplet()
 
 	PrintLn("");
 	PrintLn("Nuplet ajouté !");
-	PortableSleep(2);
+
+	AfficherPages(intToBin8(r.GetId()));
+	PortableSleep(10);
 }
