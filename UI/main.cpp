@@ -105,6 +105,7 @@ int main(int argc, char** argv) {
 							break;
 						}
 						case 2: {
+							EffacerNuplet();
 							choix3 = MenuSQL();
 							break;
 						}

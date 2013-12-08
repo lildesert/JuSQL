@@ -35,3 +35,13 @@ string Attribut::GetNom()
 {
 	return this->nomAttribut;
 }
+
+void Attribut::SetPosition(int pos)
+{
+	this->positionAttribut = pos;
+}
+
+int Attribut::GetPosition()
+{
+	return this->positionAttribut;
+}

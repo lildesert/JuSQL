@@ -6,8 +6,6 @@ using namespace std;
 
 // Affichage du menu de l'application
 int MenuPrincipal () {
-	char e_aigu=0x82;
-	char e_grave=0x8A;
 
 	vector<string> menuLn(3);
 	menuLn[0] = "1 - Gestion du schéma de la base";
@@ -240,4 +238,67 @@ void AjoutNuplet()
 
 	AfficherPages(intToBin8(r.GetId()));
 	PortableSleep(10);
+}
+
+void EffacerNuplet()
+{
+	ClearScreen();
+
+	PrintLn("");
+	PrintLn("");
+	PrintLn("--------- Suppression d'un Nuplet ---------");
+
+	PrintLn("");
+	PrintLn("Veuillez entrer le nom de la relation dans laquelle vous souhaitez supprimer un nuplet : ");
+	string relation;
+	cin >> relation;
+
+	Relation r = Schema::GetInstance().GetRelationByNom(relation);
+	while(r.GetNom() == "")
+	{
+		PrintLn("");
+		PrintLn("Cette relation n'existe pas dans le schéma " +Schema::GetInstance().getNom() +", veuillez entrer le nom d'une relation : ");
+		cin >> relation;
+		r = Schema::GetInstance().GetRelationByNom(relation);
+	}
+
+
+	PrintLn("");
+	PrintLn("Veuillez entrer le nom de l'attribut de " +r.GetNom() =" sur lequel portera la condition de suppression : ");
+	string attribut;
+	cin >> attribut;
+
+	Attribut a = r.GetAttributByNom(attribut);
+	while(a.GetNom() == "")
+	{
+		PrintLn("");
+		PrintLn("Cet attribut n'existe pas dans la relation " +r.GetNom() +", veuillez entrer le nom d'une attribut : ");
+		cin >> attribut;
+		a = r.GetAttributByNom(attribut);
+	}
+
+	string chaineRetour = "";
+
+	PrintLn("Entrez la valeur pour l'attribut " +a.GetNom() +", type (" +a.GetType() +") : ");
+	string valueA;
+	cin >> valueA;
+
+	if(a.GetType() == "I")
+	{
+		int nb = atoi(valueA.c_str());
+		chaineRetour += intToBin(nb);
+	}
+	else
+	{
+		chaineRetour += asciiToBin(valueA);
+	}
+
+	deleteNupletByChamp(intToBin8(r.GetId()), a.GetPosition(), chaineRetour);
+
+	PrintLn("");
+	PrintLn("Nuplet(s) supprimé(s) !");
+
+	AfficherPages(intToBin8(r.GetId()));
+	PortableSleep(10);
+
 }

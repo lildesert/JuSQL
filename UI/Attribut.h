@@ -19,12 +19,15 @@ public:
 	int GetTaille();
 	string GetType();
 	string GetNom();
+	void SetPosition(int pos);
+	int GetPosition();
 
 private:
 	int idAttribut;
 	string nomAttribut;
 	string typeAttribut;
 	int tailleAttribut;
+	int positionAttribut;
 
 	friend class boost::serialization::access;
         

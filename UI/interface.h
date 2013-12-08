@@ -20,5 +20,7 @@ int MenuSQL();
 
 void AjoutNuplet();
 
+void EffacerNuplet();
+
 #endif	/* INTERFACE_H */
 

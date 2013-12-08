@@ -20,6 +20,7 @@ Relation::~Relation(void)
 
 void Relation::addAttribut(Attribut a)
 {
+	a.SetPosition(this->listAttribut.size() + 1);
 	(this->listAttribut).push_back(a);
 }
 
@@ -79,4 +80,17 @@ int Relation::NbMaxNuplets()
 vector<Attribut> Relation::GetAttributs()
 {
 	return this->listAttribut;
+}
+
+Attribut Relation::GetAttributByNom(string nom)
+{
+	Attribut a;
+	for (auto &att : this->listAttribut)
+	{
+		if(att.GetNom() == nom)
+		{
+			a = att;
+		}
+	}
+	return a;
 }
