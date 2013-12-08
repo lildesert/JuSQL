@@ -33,5 +33,7 @@ void afficherPage(string IDPage);
 
 void AfficherPages(string IDRelation);
 
+int selectByChamp(string IDRelation, int numChamp, string ref);
+
 #endif	/* PAGES_MANAGER_H */
 

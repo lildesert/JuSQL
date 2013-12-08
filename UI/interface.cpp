@@ -408,7 +408,7 @@ void SelectWithPredicat()
 		chaineRetour += asciiToBin(valueA);
 	}
 
-	//selectByChamp(intToBin8(r.GetId()), a.GetPosition(), chaineRetour);
+	selectByChamp(intToBin8(r.GetId()), a.GetPosition(), chaineRetour);
 
 	Retour();
 }
