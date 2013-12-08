@@ -37,6 +37,7 @@ private:
 		ar & nomAttribut;
 		ar & typeAttribut;
 		ar & tailleAttribut;
+		ar & positionAttribut;
     }
 };
 
