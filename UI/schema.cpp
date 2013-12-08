@@ -24,6 +24,11 @@ void Schema::addRelation(Relation r)
 	(this->listRelation).push_back(r);
 }
 
+void Schema::addRelationTMP(Relation r)
+{
+	(this->listRelationTMP).push_back(r);
+}
+
 Relation Schema::GetRelationById(string id)
 {
 	Relation r;
@@ -46,6 +51,11 @@ void Schema::DeleteAllRelations()
 vector<Relation> Schema::GetRelations()
 {
 	return this->listRelation;
+}
+
+vector<Relation> Schema::GetRelationsTMP()
+{
+	return this->listRelationTMP;
 }
 
 Relation Schema::GetRelationByNom(string nom)

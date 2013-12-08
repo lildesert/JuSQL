@@ -28,5 +28,7 @@ void AfficherPagesByRelation();
 
 void Retour();
 
+void SelectWithPredicat();
+
 #endif	/* INTERFACE_H */
 

@@ -102,6 +102,7 @@ int main(int argc, char** argv) {
 							break;
 						}
 						case 4: {
+							SelectWithPredicat();
 							choix3 = MenuSQL();
 							break;
 						}
