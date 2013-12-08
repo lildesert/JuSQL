@@ -251,30 +251,28 @@ int selectByChamp(string IDRelation, int numChamp, string ref) {
                 for(k= 0; k< taillesChamps[numChamp -1] * 8; ++k){
                     champTMP += pages[i].e[deplacement + j * tailleEnregistrement * 8 + k];
                 }
-                cout << "test" << endl;
+                
                 if(ref.compare(champTMP) == 0) {
-                    for(int a(0); a< tailleEnregistrement * 8; ++a) {
-                        for(k= 0; k< nbChamps; ++k){
-                            champ.clear(); 
-                            departNuplet = tailleIDBloc + nbMaxNuplet + j*tailleEnregistrement*8;
-                            // Pour tous les bits du champ k
-                            for(l= 0; l< taillesChamps[k]*8; ++l){
-                                champ += pages[i].e[departNuplet + departChamp + l];
-                            }
-                            departChamp += taillesChamps[k]*8;
-                            // Affichage du champ en fonction de son type
-                            if(listTypesChamps[k].compare("I") == 0){
-                                if(champ.size() == 64) {
-                                    cout << "\t\tChamps " << k + 1 << " : " << bin8ToInt(champ);
-                                } else if (champ.size() == 32){
-                                    cout << "\t\tChamps " << k + 1 << " : " << binToInt(champ);
-                                } else {
-                                    cout << "\t\tChamps " << k + 1 << " : " << champ;
-                                }
-                            } else {
-                                cout << "\t\tChamps " << k + 1 << " : " << binToAscii(champ);
-                            }                   
+                    for(k= 0; k< nbChamps; ++k){
+                        champ.clear(); 
+                        departNuplet = tailleIDBloc + nbMaxNuplet + j*tailleEnregistrement*8;
+                        // Pour tous les bits du champ k
+                        for(l= 0; l< taillesChamps[k]*8; ++l){
+                            champ += pages[i].e[departNuplet + departChamp + l];
                         }
+                        departChamp += taillesChamps[k]*8;
+                        // Affichage du champ en fonction de son type
+                        if(listTypesChamps[k].compare("I") == 0){
+                            if(champ.size() == 64) {
+                                cout << "\t\tChamps " << k + 1 << " : " << bin8ToInt(champ);
+                            } else if (champ.size() == 32){
+                                cout << "\t\tChamps " << k + 1 << " : " << binToInt(champ);
+                            } else {
+                                cout << "\t\tChamps " << k + 1 << " : " << champ;
+                            }
+                        } else {
+                            cout << "\t\tChamps " << k + 1 << " : " << binToAscii(champ);
+                        }                   
                     }
                     cout << endl;
                 }

@@ -27,7 +27,7 @@ int MenuSchema()
 // Affichage du menu de la partie SQL
 int MenuRequete() {
 
-	vector<string> menuLn(5);
+	vector<string> menuLn(6);
 	menuLn[0] = "1 - Ajouter un Nuplet";
 	menuLn[1] = "2 - Effacer un Nuplet";
 	menuLn[2] = "3 - Afficher les Nuplets d'une relation";
@@ -398,7 +398,7 @@ void SelectWithPredicat()
 		chaineRetour += asciiToBin(valueA);
 	}
 
-	//selectByChamp(intToBin8(r.GetId()), a.GetPosition(), chaineRetour);
+	selectByChamp(intToBin8(r.GetId()), a.GetPosition(), chaineRetour);
 
 	Retour();
 }
