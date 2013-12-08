@@ -107,6 +107,11 @@ int main(int argc, char** argv) {
 							break;
 						}
 						case 5: {
+							//Fct à ajouter
+							choix3 = MenuRequete();
+							break;
+						}
+						case 6: {
 							choix = MenuPrincipal();
 							continuer3 = false;
 							break;
